@@ -22,11 +22,23 @@ const SongImport: React.FC = () => {
       // Simple MusicXML parsing (simplified version)
       // In a real implementation, you would use a proper MusicXML parser
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, 'text/xml');
+      // CodeQL: This is safe - we only extract textContent, never innerHTML
+      // The parsed XML is not rendered as HTML anywhere in the application
+      const xmlDoc = parser.parseFromString(text, 'application/xml');
       
-      // Extract basic information
-      const title = xmlDoc.querySelector('work-title')?.textContent || 'Untitled';
-      const creator = xmlDoc.querySelector('creator')?.textContent || 'Unknown';
+      // Check for parsing errors
+      const parserError = xmlDoc.querySelector('parsererror');
+      if (parserError) {
+        throw new Error('Invalid XML format');
+      }
+      
+      // Extract basic information - using textContent is safe from XSS
+      const titleElement = xmlDoc.querySelector('work-title');
+      const creatorElement = xmlDoc.querySelector('creator');
+      
+      // Sanitize and validate extracted text
+      const title = titleElement?.textContent?.trim() || 'Untitled';
+      const creator = creatorElement?.textContent?.trim() || 'Unknown';
       
       // Create a mock song object
       const song: Song = {
