@@ -7,22 +7,27 @@ import { useTranslation } from 'react-i18next';
 import InputPanel from '../features/AIComposer/InputPanel';
 import Editor from '../features/AIComposer/Editor';
 import PreviewPlayer from '../features/AIComposer/PreviewPlayer';
+import { LessonPlayer } from '../features/LessonMode';
 import type {
   Composition,
   CompositionSection,
   AICommand,
   CompositionStyle
 } from '../features/AIComposer/types';
+import type { Song } from '../types/Song';
 import { createEmptyComposition, generateId } from '../features/AIComposer/composerUtils';
 import { generateMelody, transformMelodyStyle } from '../features/AIComposer/MelodyGenerator';
 import { generateSectionLyrics, refineLyrics } from '../features/AIComposer/LyricAssistant';
 import { exportComposition } from '../features/AIComposer/Exporter';
+import { compositionToSong } from '../utils/conversionUtils';
+import { saveSong } from '../utils/songStorage';
 
 const AIComposerPage: React.FC = () => {
   const { t } = useTranslation();
   const [composition, setComposition] = useState<Composition>(createEmptyComposition());
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState<'input' | 'edit' | 'preview'>('input');
+  const [lessonSong, setLessonSong] = useState<Song | null>(null);
 
   const handleInputCaptured = async () => {
     setIsGenerating(true);
@@ -206,6 +211,26 @@ const AIComposerPage: React.FC = () => {
     }
   };
 
+  const handleStartLesson = () => {
+    try {
+      const song = compositionToSong(composition);
+      saveSong(song);
+      setLessonSong(song);
+    } catch (error) {
+      console.error('Failed to start lesson:', error);
+      alert('Failed to start lesson');
+    }
+  };
+
+  const handleBackFromLesson = () => {
+    setLessonSong(null);
+  };
+
+  // If in lesson mode, show the lesson player
+  if (lessonSong) {
+    return <LessonPlayer song={lessonSong} onBack={handleBackFromLesson} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -307,7 +332,25 @@ const AIComposerPage: React.FC = () => {
           )}
 
           {activeTab === 'preview' && (
-            <PreviewPlayer composition={composition} />
+            <>
+              <PreviewPlayer composition={composition} />
+              
+              {/* Start Lesson Button */}
+              <div className="bg-gray-800 p-6 rounded-lg text-center">
+                <h3 className="text-xl font-semibold mb-3">
+                  🎸 {t('lesson.title')}
+                </h3>
+                <p className="text-gray-400 mb-4">
+                  Practice your composition with interactive chord display and playback
+                </p>
+                <button
+                  onClick={handleStartLesson}
+                  className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-lg font-bold text-lg transition-all transform hover:scale-105"
+                >
+                  🎓 Start Interactive Lesson
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>
