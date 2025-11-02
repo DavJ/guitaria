@@ -67,7 +67,7 @@ export class PlaybackEngine {
 
   private initAudioContext(): void {
     try {
-      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext; // eslint-disable-line @typescript-eslint/no-explicit-any
       this.audioContext = new AudioContextClass();
       this.gainNode = this.audioContext.createGain();
       this.gainNode.connect(this.audioContext.destination);
@@ -206,15 +206,21 @@ export class PlaybackEngine {
     // Remove any extra characters and get base chord
     const baseChord = chord.replace(/[0-9]/g, '').trim();
     
-    // Try exact match first
+    // Try exact match first (including minor chords like Am, Em, etc.)
     if (CHORD_NOTES[baseChord]) {
       return CHORD_NOTES[baseChord];
     }
 
-    // Try without minor/major designation
-    const root = baseChord.replace(/m|maj|min|dim|aug/g, '');
-    if (CHORD_NOTES[root]) {
-      return CHORD_NOTES[root];
+    // Try to extract root and quality
+    const rootMatch = baseChord.match(/^([A-G][#b]?)/);
+    if (rootMatch) {
+      const root = rootMatch[1];
+      const isMinor = baseChord.includes('m') && !baseChord.includes('maj');
+      const chordKey = isMinor ? `${root}m` : root;
+      
+      if (CHORD_NOTES[chordKey]) {
+        return CHORD_NOTES[chordKey];
+      }
     }
 
     // Default to C major if chord not found

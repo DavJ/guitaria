@@ -4,6 +4,7 @@
  */
 
 export interface Song {
+  id?: string; // Optional ID for uniqueness
   title: string;
   tempo: number;
   key: string;

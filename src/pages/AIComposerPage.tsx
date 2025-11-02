@@ -218,7 +218,8 @@ const AIComposerPage: React.FC = () => {
       setLessonSong(song);
     } catch (error) {
       console.error('Failed to start lesson:', error);
-      alert('Failed to start lesson');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert(`Failed to start lesson: ${errorMessage}. Please try again or check if your browser supports localStorage.`);
     }
   };
 

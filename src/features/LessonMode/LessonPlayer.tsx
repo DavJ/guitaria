@@ -102,7 +102,7 @@ const LessonPlayer: React.FC<LessonPlayerProps> = ({ song, onBack }) => {
   // Basic chord fingering positions (simplified)
   const getChordFingering = (chord: string): string => {
     const fingerings: Record<string, string> = {
-      'C': '332010',
+      'C': 'x32010',
       'D': 'xx0232',
       'E': '022100',
       'F': '133211',
@@ -111,10 +111,12 @@ const LessonPlayer: React.FC<LessonPlayerProps> = ({ song, onBack }) => {
       'Am': 'x02210',
       'Dm': 'xx0231',
       'Em': '022000',
+      'B': 'x24442',
+      'Bm': 'x24432',
     };
     
     const baseChord = chord.replace(/[0-9]/g, '').trim();
-    return fingerings[baseChord] || 'x-x-x-x-x-x';
+    return fingerings[baseChord] || 'xxxxxx'; // Consistent fallback
   };
 
   return (

@@ -13,13 +13,19 @@ export function saveSong(song: Song): void {
   try {
     const songs = loadSongs();
     
-    // Check if song with same title exists and update it
-    const existingIndex = songs.findIndex(s => s.title === song.title);
+    // Generate ID if not present
+    const songWithId = {
+      ...song,
+      id: song.id || `song-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    };
+    
+    // Check if song with same ID exists and update it
+    const existingIndex = songs.findIndex(s => s.id === songWithId.id);
     
     if (existingIndex >= 0) {
-      songs[existingIndex] = song;
+      songs[existingIndex] = songWithId;
     } else {
-      songs.push(song);
+      songs.push(songWithId);
     }
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(songs));
@@ -124,10 +130,33 @@ export async function importSongsFromFile(file: File): Promise<Song[]> {
     }
     
     // Validate each song has required properties
-    importedSongs.forEach(song => {
-      if (!song.title || !song.tempo || !song.key || !Array.isArray(song.sections)) {
-        throw new Error('Invalid song format');
+    importedSongs.forEach((song, index) => {
+      if (!song.title || typeof song.title !== 'string') {
+        throw new Error(`Song at index ${index}: title is required and must be a string`);
       }
+      if (!song.tempo || typeof song.tempo !== 'number') {
+        throw new Error(`Song at index ${index}: tempo is required and must be a number`);
+      }
+      if (!song.key || typeof song.key !== 'string') {
+        throw new Error(`Song at index ${index}: key is required and must be a string`);
+      }
+      if (!Array.isArray(song.sections)) {
+        throw new Error(`Song at index ${index}: sections must be an array`);
+      }
+      
+      // Validate sections
+      song.sections.forEach((section: unknown, sectionIndex: number) => {
+        const sec = section as Record<string, unknown>;
+        if (!sec.name || typeof sec.name !== 'string') {
+          throw new Error(`Song at index ${index}, section ${sectionIndex}: name is required and must be a string`);
+        }
+        if (!Array.isArray(sec.chords)) {
+          throw new Error(`Song at index ${index}, section ${sectionIndex}: chords must be an array`);
+        }
+        if (sec.lyrics !== undefined && typeof sec.lyrics !== 'string') {
+          throw new Error(`Song at index ${index}, section ${sectionIndex}: lyrics must be a string if provided`);
+        }
+      });
     });
     
     // Merge with existing songs
@@ -135,7 +164,7 @@ export async function importSongsFromFile(file: File): Promise<Song[]> {
     const mergedSongs = [...existingSongs];
     
     importedSongs.forEach(importedSong => {
-      const existingIndex = mergedSongs.findIndex(s => s.title === importedSong.title);
+      const existingIndex = mergedSongs.findIndex(s => s.id === importedSong.id);
       if (existingIndex >= 0) {
         mergedSongs[existingIndex] = importedSong;
       } else {

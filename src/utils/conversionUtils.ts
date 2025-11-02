@@ -10,6 +10,7 @@ import type { Song } from '../types/Song';
  */
 export function compositionToSong(composition: Composition): Song {
   return {
+    id: composition.id,
     title: composition.title,
     tempo: composition.tempo,
     key: composition.key,
