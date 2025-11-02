@@ -92,5 +92,76 @@
     "continue": "Continue",
     "back": "Back",
     "next": "Next"
+  },
+  "aiComposer": {
+    "title": "AI Composer",
+    "subtitle": "Create your own songs with AI assistance",
+    "generating": "AI is generating your composition...",
+    "tabs": {
+      "input": "Input",
+      "edit": "Edit",
+      "preview": "Preview"
+    },
+    "input": {
+      "title": "Input Panel",
+      "selectType": "Select input type",
+      "audio": "Audio",
+      "midi": "MIDI",
+      "notation": "Notation",
+      "startRecording": "Start Recording",
+      "stopRecording": "Stop Recording",
+      "recording": "Recording...",
+      "recorded": "Recording complete",
+      "uploadFile": "Upload File",
+      "useInput": "Use This Input",
+      "microphoneError": "Could not access microphone"
+    },
+    "editor": {
+      "style": "Style",
+      "key": "Key",
+      "tempo": "Tempo (BPM)",
+      "timeSignature": "Time Signature",
+      "sections": "Sections",
+      "noSections": "No sections yet. Start by adding input.",
+      "chords": "Chords",
+      "lyrics": "Lyrics",
+      "noLyrics": "No lyrics yet...",
+      "aiCommand": "AI Command",
+      "commandPlaceholder": "e.g., 'Make the chorus sadder', 'Add a country bridge'",
+      "execute": "Execute",
+      "commandExamples": "Try: 'Change key to G', 'Speed up tempo', 'Add bridge'"
+    },
+    "preview": {
+      "title": "Preview Player",
+      "artist": "Artist",
+      "style": "Style",
+      "tempo": "Tempo",
+      "key": "Key",
+      "currentChords": "Current Chords",
+      "noChords": "No chords",
+      "lyrics": "Lyrics",
+      "play": "Play",
+      "pause": "Pause",
+      "stop": "Stop",
+      "sections": "Sections",
+      "noComposition": "No composition to preview"
+    },
+    "export": {
+      "title": "Export Composition"
+    },
+    "sections": {
+      "intro": "Intro",
+      "verse": "Verse",
+      "chorus": "Chorus",
+      "bridge": "Bridge",
+      "solo": "Solo",
+      "outro": "Outro"
+    },
+    "errors": {
+      "generationFailed": "Failed to generate composition",
+      "commandFailed": "Failed to execute command",
+      "exportFailed": "Failed to export composition",
+      "importFailed": "Failed to import composition"
+    }
   }
 }
