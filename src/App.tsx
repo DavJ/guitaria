@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HomePage from './pages/HomePage';
 import LessonPage from './pages/LessonPage';
+import AIComposerPage from './pages/AIComposerPage';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import Logo from './components/Logo';
 
@@ -32,6 +33,12 @@ function App() {
                   >
                     {t('nav.lessons')}
                   </Link>
+                  <Link
+                    to="/composer"
+                    className="text-gray-300 hover:text-amber-400 transition-colors px-3 py-2 rounded-lg hover:bg-gray-800"
+                  >
+                    🎼 {t('nav.composer')}
+                  </Link>
                 </div>
               </div>
               <LanguageSwitcher />
@@ -43,6 +50,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/lesson" element={<LessonPage />} />
+          <Route path="/composer" element={<AIComposerPage />} />
         </Routes>
       </div>
     </Router>

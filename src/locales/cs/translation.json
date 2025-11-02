@@ -11,7 +11,8 @@
     "lessons": "Lekce",
     "library": "Knihovna",
     "settings": "Nastavení",
-    "chatbot": "AI Tutor"
+    "chatbot": "AI Tutor",
+    "composer": "AI Skladatel"
   },
   "lesson": {
     "title": "Lekce",
@@ -92,5 +93,76 @@
     "continue": "Pokračovat",
     "back": "Zpět",
     "next": "Další"
+  },
+  "aiComposer": {
+    "title": "AI Skladatel",
+    "subtitle": "Vytvořte vlastní písně s pomocí AI",
+    "generating": "AI generuje vaši skladbu...",
+    "tabs": {
+      "input": "Vstup",
+      "edit": "Editace",
+      "preview": "Náhled"
+    },
+    "input": {
+      "title": "Vstupní Panel",
+      "selectType": "Vyberte typ vstupu",
+      "audio": "Audio",
+      "midi": "MIDI",
+      "notation": "Notace",
+      "startRecording": "Začít nahrávání",
+      "stopRecording": "Ukončit nahrávání",
+      "recording": "Nahrává se...",
+      "recorded": "Nahrávání dokončeno",
+      "uploadFile": "Nahrát soubor",
+      "useInput": "Použít tento vstup",
+      "microphoneError": "Nelze získat přístup k mikrofonu"
+    },
+    "editor": {
+      "style": "Styl",
+      "key": "Tónina",
+      "tempo": "Tempo (BPM)",
+      "timeSignature": "Taktové označení",
+      "sections": "Sekce",
+      "noSections": "Zatím žádné sekce. Začněte přidáním vstupu.",
+      "chords": "Akordy",
+      "lyrics": "Text písně",
+      "noLyrics": "Zatím žádný text...",
+      "aiCommand": "AI Příkaz",
+      "commandPlaceholder": "např. 'Udělej refrén smutnější', 'Přidej country bridge'",
+      "execute": "Provést",
+      "commandExamples": "Zkuste: 'Změň tóninu na G', 'Zrychli tempo', 'Přidej bridge'"
+    },
+    "preview": {
+      "title": "Náhled přehrávání",
+      "artist": "Interpret",
+      "style": "Styl",
+      "tempo": "Tempo",
+      "key": "Tónina",
+      "currentChords": "Aktuální akordy",
+      "noChords": "Žádné akordy",
+      "lyrics": "Text",
+      "play": "Přehrát",
+      "pause": "Pozastavit",
+      "stop": "Zastavit",
+      "sections": "Sekce",
+      "noComposition": "Žádná skladba k náhledu"
+    },
+    "export": {
+      "title": "Export skladby"
+    },
+    "sections": {
+      "intro": "Intro",
+      "verse": "Sloka",
+      "chorus": "Refrén",
+      "bridge": "Bridge",
+      "solo": "Sólo",
+      "outro": "Outro"
+    },
+    "errors": {
+      "generationFailed": "Nepodařilo se vygenerovat skladbu",
+      "commandFailed": "Nepodařilo se provést příkaz",
+      "exportFailed": "Nepodařilo se exportovat skladbu",
+      "importFailed": "Nepodařilo se importovat skladbu"
+    }
   }
 }
