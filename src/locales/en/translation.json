@@ -27,7 +27,11 @@
     "accuracy": "Accuracy",
     "rhythm": "Rhythm",
     "musicNotation": "Music Notation",
-    "sheetMusicPlaceholder": "Sheet music will be displayed here"
+    "sheetMusicPlaceholder": "Sheet music will be displayed here",
+    "displayOptions": "Display Options",
+    "showChords": "Show Chords",
+    "showLyrics": "Show Lyrics",
+    "showFingering": "Show Fingering"
   },
   "difficulty": {
     "beginner": "Beginner",
