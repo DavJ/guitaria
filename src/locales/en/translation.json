@@ -3,6 +3,9 @@
     "name": "Guitaria",
     "tagline": "Interactive Guitar Learning"
   },
+  "home": {
+    "features": "Features"
+  },
   "nav": {
     "home": "Home",
     "lessons": "Lessons",
@@ -20,13 +23,19 @@
     "section": "Section",
     "score": "Score",
     "accuracy": "Accuracy",
-    "rhythm": "Rhythm"
+    "rhythm": "Rhythm",
+    "musicNotation": "Music Notation",
+    "sheetMusicPlaceholder": "Sheet music will be displayed here"
   },
   "difficulty": {
     "beginner": "Beginner",
     "intermediate": "Intermediate",
     "advanced": "Advanced",
-    "expert": "Expert"
+    "expert": "Expert",
+    "beginnerDesc": "Basic chords and simple rhythms",
+    "intermediateDesc": "Barre chords and complex rhythms",
+    "advancedDesc": "Solos, tapping, and advanced techniques",
+    "expertDesc": "Complete original version with details"
   },
   "fretboard": {
     "title": "Fretboard",
@@ -42,7 +51,8 @@
     "title": "Pitch Detection",
     "enableMicrophone": "Enable Microphone",
     "detecting": "Detecting...",
-    "noInput": "No Input"
+    "noInput": "No Input",
+    "detectedNote": "Detected Note"
   },
   "scoring": {
     "title": "Scoring",

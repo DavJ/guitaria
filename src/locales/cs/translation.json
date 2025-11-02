@@ -3,6 +3,9 @@
     "name": "Guitaria",
     "tagline": "Interaktivní výuka kytary"
   },
+  "home": {
+    "features": "Funkce"
+  },
   "nav": {
     "home": "Domů",
     "lessons": "Lekce",
@@ -20,13 +23,19 @@
     "section": "Sekce",
     "score": "Skóre",
     "accuracy": "Přesnost",
-    "rhythm": "Rytmus"
+    "rhythm": "Rytmus",
+    "musicNotation": "Notový zápis",
+    "sheetMusicPlaceholder": "Zde bude zobrazena notace"
   },
   "difficulty": {
     "beginner": "Začátečník",
     "intermediate": "Mírně pokročilý",
     "advanced": "Pokročilý",
-    "expert": "Expert"
+    "expert": "Expert",
+    "beginnerDesc": "Základní akordy a jednoduché rytmy",
+    "intermediateDesc": "Barre akordy a složitější rytmy",
+    "advancedDesc": "Sóla, tapping a pokročilé techniky",
+    "expertDesc": "Kompletní originální verze s detaily"
   },
   "fretboard": {
     "title": "Hmatník",
@@ -42,7 +51,8 @@
     "title": "Detekce tónu",
     "enableMicrophone": "Povolit mikrofon",
     "detecting": "Detekuje se...",
-    "noInput": "Žádný vstup"
+    "noInput": "Žádný vstup",
+    "detectedNote": "Detekovaná nota"
   },
   "scoring": {
     "title": "Hodnocení",

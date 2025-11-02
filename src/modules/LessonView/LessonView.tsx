@@ -43,9 +43,9 @@ const LessonView: React.FC = () => {
             
             {/* Music Notation Area */}
             <div className="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px]">
-              <h3 className="text-xl font-bold mb-4">Music Notation</h3>
+              <h3 className="text-xl font-bold mb-4">{t('lesson.musicNotation')}</h3>
               <div className="flex items-center justify-center h-40 bg-gray-700 rounded-lg">
-                <p className="text-gray-400">Sheet music will be displayed here</p>
+                <p className="text-gray-400">{t('lesson.sheetMusicPlaceholder')}</p>
               </div>
             </div>
           </div>

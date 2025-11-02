@@ -37,9 +37,12 @@ const PitchDetection: React.FC = () => {
       return;
     }
     
-    analyserRef.current.getFloatTimeDomainData(buffer as Float32Array<ArrayBuffer>);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    analyserRef.current.getFloatTimeDomainData(buffer as any);
     
-    const [pitch, clarity] = detectorRef.current.findPitch(buffer as Float32Array<ArrayBuffer>, audioContextRef.current!.sampleRate);
+    // Type assertion needed due to library type mismatch
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [pitch, clarity] = detectorRef.current.findPitch(buffer as any, audioContextRef.current!.sampleRate);
     
     if (clarity > 0.9 && pitch > 0) {
       const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -129,7 +132,7 @@ const PitchDetection: React.FC = () => {
         )}
         
         <div className="text-center">
-          <div className="text-sm text-gray-400 mb-2">Detected Note:</div>
+          <div className="text-sm text-gray-400 mb-2">{t('pitchDetection.detectedNote')}</div>
           <div className="text-4xl font-bold">
             {useAppStore.getState().detectedPitch || '—'}
           </div>

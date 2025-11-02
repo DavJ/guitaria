@@ -51,10 +51,10 @@ const DifficultySelector: React.FC = () => {
       {/* Difficulty description */}
       <div className="mt-4 p-4 bg-gray-700 rounded-lg">
         <p className="text-sm text-gray-300">
-          {difficulty === 'beginner' && 'Základní akordy a jednoduché rytmy'}
-          {difficulty === 'intermediate' && 'Barre akordy a složitější rytmy'}
-          {difficulty === 'advanced' && 'Sóla, tapping a pokročilé techniky'}
-          {difficulty === 'expert' && 'Kompletní originální verze s detaily'}
+          {difficulty === 'beginner' && t('difficulty.beginnerDesc')}
+          {difficulty === 'intermediate' && t('difficulty.intermediateDesc')}
+          {difficulty === 'advanced' && t('difficulty.advancedDesc')}
+          {difficulty === 'expert' && t('difficulty.expertDesc')}
         </p>
       </div>
     </div>

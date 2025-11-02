@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
 
           {/* Features */}
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Features</h2>
+            <h2 className="text-2xl font-bold mb-6">{t('home.features')}</h2>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <span className="text-2xl">🎼</span>
