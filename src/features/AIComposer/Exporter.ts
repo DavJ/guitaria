@@ -92,6 +92,18 @@ This is a placeholder export.`;
 };
 
 /**
+ * Sanitize filename to remove invalid characters
+ */
+const sanitizeFilename = (filename: string): string => {
+  // Remove invalid filename characters
+  return filename
+    .replace(/[<>:"/\\|?*]/g, '_')
+    .replace(/[\x00-\x1F]/g, '') // eslint-disable-line no-control-regex
+    .replace(/\s+/g, '_')
+    .substring(0, 200); // Limit length
+};
+
+/**
  * Download a file to the user's computer
  */
 export const downloadFile = (blob: Blob, filename: string): void => {
@@ -114,19 +126,20 @@ export const exportComposition = async (
 ): Promise<void> => {
   let blob: Blob;
   let filename: string;
+  const safeTitle = sanitizeFilename(composition.title);
 
   switch (format.format) {
     case 'gtrsong':
       blob = exportToGTRSong(composition);
-      filename = `${composition.title}.gtrsong`;
+      filename = `${safeTitle}.gtrsong`;
       break;
     case 'musicxml':
       blob = exportToMusicXML(composition);
-      filename = `${composition.title}.musicxml`;
+      filename = `${safeTitle}.musicxml`;
       break;
     case 'midi':
       blob = exportToMIDI(composition);
-      filename = `${composition.title}.mid`;
+      filename = `${safeTitle}.mid`;
       break;
     default:
       throw new Error('Unsupported export format');

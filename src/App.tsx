@@ -37,7 +37,7 @@ function App() {
                     to="/composer"
                     className="text-gray-300 hover:text-amber-400 transition-colors px-3 py-2 rounded-lg hover:bg-gray-800"
                   >
-                    🎼 AI Composer
+                    🎼 {t('nav.composer')}
                   </Link>
                 </div>
               </div>

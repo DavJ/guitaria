@@ -129,8 +129,9 @@ export const developMotif = (
       // Sequence (transposition)
       const sourceNote = developed[Math.floor(Math.random() * developed.length)];
       const transposition = Math.random() > 0.5 ? 2 : -2;
-      const midiNote = sourceNote.octave * 12 + 
-        ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].indexOf(sourceNote.pitch);
+      const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      const pitchIndex = noteNames.indexOf(sourceNote.pitch);
+      const midiNote = sourceNote.octave * 12 + (pitchIndex >= 0 ? pitchIndex : 0);
       const { pitch, octave } = midiToPitch(midiNote + transposition);
       
       developed.push({

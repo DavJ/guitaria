@@ -11,7 +11,8 @@
     "lessons": "Lessons",
     "library": "Library",
     "settings": "Settings",
-    "chatbot": "AI Tutor"
+    "chatbot": "AI Tutor",
+    "composer": "AI Composer"
   },
   "lesson": {
     "title": "Lesson",

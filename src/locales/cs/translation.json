@@ -11,7 +11,8 @@
     "lessons": "Lekce",
     "library": "Knihovna",
     "settings": "Nastavení",
-    "chatbot": "AI Tutor"
+    "chatbot": "AI Tutor",
+    "composer": "AI Skladatel"
   },
   "lesson": {
     "title": "Lekce",
