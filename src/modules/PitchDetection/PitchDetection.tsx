@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/appStore';
 import * as Pitchy from 'pitchy';
@@ -9,34 +9,60 @@ const PitchDetection: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
-  const detectorRef = useRef<any>(null);
+  const detectorRef = useRef<Pitchy.PitchDetector<Float32Array> | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   
   const {
     microphoneEnabled,
-    detectedPitch,
     setMicrophoneEnabled,
     setDetectedPitch,
   } = useAppStore();
 
-  useEffect(() => {
-    if (microphoneEnabled && !isInitialized) {
-      initializeMicrophone();
-    } else if (!microphoneEnabled && isInitialized) {
-      cleanup();
+  const cleanup = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
     }
     
-    return () => {
-      cleanup();
-    };
-  }, [microphoneEnabled]);
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+    
+    setIsInitialized(false);
+    setDetectedPitch(null);
+  }, [setDetectedPitch]);
 
-  const initializeMicrophone = async () => {
+  const detectPitch = useCallback((buffer: Float32Array) => {
+    if (!analyserRef.current || !detectorRef.current || !microphoneEnabled) {
+      return;
+    }
+    
+    analyserRef.current.getFloatTimeDomainData(buffer as Float32Array<ArrayBuffer>);
+    
+    const [pitch, clarity] = detectorRef.current.findPitch(buffer as Float32Array<ArrayBuffer>, audioContextRef.current!.sampleRate);
+    
+    if (clarity > 0.9 && pitch > 0) {
+      const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      const noteNum = 12 * (Math.log(pitch / 440) / Math.log(2)) + 49;
+      const noteIndex = Math.round(noteNum) % 12;
+      const noteName = noteNames[noteIndex];
+      const octave = Math.floor(Math.round(noteNum) / 12) + 3;
+      
+      setDetectedPitch(`${noteName}${octave}`);
+    } else {
+      setDetectedPitch(null);
+    }
+    
+    animationFrameRef.current = requestAnimationFrame(() => detectPitch(buffer));
+  }, [microphoneEnabled, setDetectedPitch]);
+
+  const initializeMicrophone = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       
       // Initialize Audio Context
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      audioContextRef.current = new AudioContextClass();
       const audioContext = audioContextRef.current;
       
       // Create analyser node
@@ -62,46 +88,19 @@ const PitchDetection: React.FC = () => {
       setMicrophoneEnabled(false);
       console.error('Microphone initialization error:', err);
     }
-  };
+  }, [t, setMicrophoneEnabled, detectPitch]);
 
-  const detectPitch = (buffer: Float32Array) => {
-    if (!analyserRef.current || !detectorRef.current || !microphoneEnabled) {
-      return;
+  useEffect(() => {
+    if (microphoneEnabled && !isInitialized) {
+      initializeMicrophone();
+    } else if (!microphoneEnabled && isInitialized) {
+      cleanup();
     }
     
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    analyserRef.current.getFloatTimeDomainData(buffer as any);
-    
-    const [pitch, clarity] = detectorRef.current.findPitch(buffer as any, audioContextRef.current!.sampleRate);
-    
-    if (clarity > 0.9 && pitch > 0) {
-      const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-      const noteNum = 12 * (Math.log(pitch / 440) / Math.log(2)) + 49;
-      const noteIndex = Math.round(noteNum) % 12;
-      const noteName = noteNames[noteIndex];
-      const octave = Math.floor(Math.round(noteNum) / 12) + 3;
-      
-      setDetectedPitch(`${noteName}${octave}`);
-    } else {
-      setDetectedPitch(null);
-    }
-    
-    animationFrameRef.current = requestAnimationFrame(() => detectPitch(buffer));
-  };
-
-  const cleanup = () => {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
-    
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
-    
-    setIsInitialized(false);
-    setDetectedPitch(null);
-  };
+    return () => {
+      cleanup();
+    };
+  }, [microphoneEnabled, isInitialized, initializeMicrophone, cleanup]);
 
   const handleToggleMicrophone = () => {
     setMicrophoneEnabled(!microphoneEnabled);
@@ -132,7 +131,7 @@ const PitchDetection: React.FC = () => {
         <div className="text-center">
           <div className="text-sm text-gray-400 mb-2">Detected Note:</div>
           <div className="text-4xl font-bold">
-            {detectedPitch || '—'}
+            {useAppStore.getState().detectedPitch || '—'}
           </div>
         </div>
         
