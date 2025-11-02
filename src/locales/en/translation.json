@@ -10,7 +10,8 @@
     "home": "Home",
     "lessons": "Lessons",
     "library": "Library",
-    "settings": "Settings"
+    "settings": "Settings",
+    "chatbot": "AI Tutor"
   },
   "lesson": {
     "title": "Lesson",
@@ -75,6 +76,12 @@
     "theme": "Theme",
     "microphone": "Microphone",
     "audio": "Audio"
+  },
+  "chatbot": {
+    "title": "AI Guitar Tutor",
+    "placeholder": "Ask anything about playing guitar...",
+    "send": "Send",
+    "welcome": "Hello! I'm your AI guitar tutor. How can I help you?"
   },
   "common": {
     "save": "Save",

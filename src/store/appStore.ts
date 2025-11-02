@@ -44,7 +44,7 @@ interface AppState {
   microphoneEnabled: boolean;
   detectedPitch: string | null;
   score: ScoreData;
-  language: 'cs' | 'en';
+  language: 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh';
   
   // Actions
   setCurrentSong: (song: Song | null) => void;
@@ -59,7 +59,7 @@ interface AppState {
   setDetectedPitch: (pitch: string | null) => void;
   updateScore: (score: Partial<ScoreData>) => void;
   resetScore: () => void;
-  setLanguage: (lang: 'cs' | 'en') => void;
+  setLanguage: (lang: 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh') => void;
 }
 
 const initialScore: ScoreData = {

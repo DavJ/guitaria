@@ -10,7 +10,8 @@
     "home": "Domů",
     "lessons": "Lekce",
     "library": "Knihovna",
-    "settings": "Nastavení"
+    "settings": "Nastavení",
+    "chatbot": "AI Tutor"
   },
   "lesson": {
     "title": "Lekce",
@@ -75,6 +76,12 @@
     "theme": "Téma",
     "microphone": "Mikrofon",
     "audio": "Zvuk"
+  },
+  "chatbot": {
+    "title": "AI Gitarový Tutor",
+    "placeholder": "Zeptejte se na cokoli o hraní na kytaru...",
+    "send": "Odeslat",
+    "welcome": "Ahoj! Jsem váš AI gitarový tutor. Jak vám mohu pomoci?"
   },
   "common": {
     "save": "Uložit",
