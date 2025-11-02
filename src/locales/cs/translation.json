@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Interaktivní výuka kytary"
+  },
+  "nav": {
+    "home": "Domů",
+    "lessons": "Lekce",
+    "library": "Knihovna",
+    "settings": "Nastavení"
+  },
+  "lesson": {
+    "title": "Lekce",
+    "play": "Přehrát",
+    "pause": "Pozastavit",
+    "stop": "Zastavit",
+    "tempo": "Tempo",
+    "loop": "Smyčka",
+    "difficulty": "Obtížnost",
+    "section": "Sekce",
+    "score": "Skóre",
+    "accuracy": "Přesnost",
+    "rhythm": "Rytmus"
+  },
+  "difficulty": {
+    "beginner": "Začátečník",
+    "intermediate": "Mírně pokročilý",
+    "advanced": "Pokročilý",
+    "expert": "Expert"
+  },
+  "fretboard": {
+    "title": "Hmatník",
+    "showNotes": "Zobrazit noty",
+    "showFingers": "Zobrazit prsty"
+  },
+  "player": {
+    "title": "Přehrávač",
+    "volume": "Hlasitost",
+    "metronome": "Metronom"
+  },
+  "pitchDetection": {
+    "title": "Detekce tónu",
+    "enableMicrophone": "Povolit mikrofon",
+    "detecting": "Detekuje se...",
+    "noInput": "Žádný vstup"
+  },
+  "scoring": {
+    "title": "Hodnocení",
+    "total": "Celkem",
+    "correct": "Správně",
+    "incorrect": "Chybně",
+    "percentage": "Úspěšnost"
+  },
+  "import": {
+    "title": "Import skladby",
+    "selectFile": "Vybrat soubor",
+    "uploadMusicXML": "Nahrát MusicXML",
+    "parsing": "Zpracovává se...",
+    "success": "Skladba úspěšně importována",
+    "error": "Chyba při importu"
+  },
+  "settings": {
+    "title": "Nastavení",
+    "language": "Jazyk",
+    "theme": "Téma",
+    "microphone": "Mikrofon",
+    "audio": "Zvuk"
+  },
+  "common": {
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "close": "Zavřít",
+    "reset": "Reset",
+    "start": "Start",
+    "continue": "Pokračovat",
+    "back": "Zpět",
+    "next": "Další"
+  }
+}

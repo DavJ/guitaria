@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Interactive Guitar Learning"
+  },
+  "nav": {
+    "home": "Home",
+    "lessons": "Lessons",
+    "library": "Library",
+    "settings": "Settings"
+  },
+  "lesson": {
+    "title": "Lesson",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "tempo": "Tempo",
+    "loop": "Loop",
+    "difficulty": "Difficulty",
+    "section": "Section",
+    "score": "Score",
+    "accuracy": "Accuracy",
+    "rhythm": "Rhythm"
+  },
+  "difficulty": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "fretboard": {
+    "title": "Fretboard",
+    "showNotes": "Show Notes",
+    "showFingers": "Show Fingers"
+  },
+  "player": {
+    "title": "Player",
+    "volume": "Volume",
+    "metronome": "Metronome"
+  },
+  "pitchDetection": {
+    "title": "Pitch Detection",
+    "enableMicrophone": "Enable Microphone",
+    "detecting": "Detecting...",
+    "noInput": "No Input"
+  },
+  "scoring": {
+    "title": "Scoring",
+    "total": "Total",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "percentage": "Success Rate"
+  },
+  "import": {
+    "title": "Import Song",
+    "selectFile": "Select File",
+    "uploadMusicXML": "Upload MusicXML",
+    "parsing": "Parsing...",
+    "success": "Song imported successfully",
+    "error": "Import error"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "microphone": "Microphone",
+    "audio": "Audio"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "reset": "Reset",
+    "start": "Start",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next"
+  }
+}
