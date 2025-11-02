@@ -1,0 +1,2 @@
+This is a placeholder for a 512x512 app icon.
+In production, replace this with actual PNG icon files.

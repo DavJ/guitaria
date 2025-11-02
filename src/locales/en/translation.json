@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Interactive Guitar Learning"
+  },
+  "home": {
+    "features": "Features"
+  },
+  "nav": {
+    "home": "Home",
+    "lessons": "Lessons",
+    "library": "Library",
+    "settings": "Settings",
+    "chatbot": "AI Tutor"
+  },
+  "lesson": {
+    "title": "Lesson",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "tempo": "Tempo",
+    "loop": "Loop",
+    "difficulty": "Difficulty",
+    "section": "Section",
+    "score": "Score",
+    "accuracy": "Accuracy",
+    "rhythm": "Rhythm",
+    "musicNotation": "Music Notation",
+    "sheetMusicPlaceholder": "Sheet music will be displayed here"
+  },
+  "difficulty": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "beginnerDesc": "Basic chords and simple rhythms",
+    "intermediateDesc": "Barre chords and complex rhythms",
+    "advancedDesc": "Solos, tapping, and advanced techniques",
+    "expertDesc": "Complete original version with details"
+  },
+  "fretboard": {
+    "title": "Fretboard",
+    "showNotes": "Show Notes",
+    "showFingers": "Show Fingers"
+  },
+  "player": {
+    "title": "Player",
+    "volume": "Volume",
+    "metronome": "Metronome"
+  },
+  "pitchDetection": {
+    "title": "Pitch Detection",
+    "enableMicrophone": "Enable Microphone",
+    "detecting": "Detecting...",
+    "noInput": "No Input",
+    "detectedNote": "Detected Note"
+  },
+  "scoring": {
+    "title": "Scoring",
+    "total": "Total",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "percentage": "Success Rate"
+  },
+  "import": {
+    "title": "Import Song",
+    "selectFile": "Select File",
+    "uploadMusicXML": "Upload MusicXML",
+    "parsing": "Parsing...",
+    "success": "Song imported successfully",
+    "error": "Import error"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "microphone": "Microphone",
+    "audio": "Audio"
+  },
+  "chatbot": {
+    "title": "AI Guitar Tutor",
+    "placeholder": "Ask anything about playing guitar...",
+    "send": "Send",
+    "welcome": "Hello! I'm your AI guitar tutor. How can I help you?"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "reset": "Reset",
+    "start": "Start",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next"
+  }
+}

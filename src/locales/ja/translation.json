@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "インタラクティブなギター学習"
+  },
+  "home": {
+    "features": "機能"
+  },
+  "nav": {
+    "home": "ホーム",
+    "lessons": "レッスン",
+    "library": "ライブラリ",
+    "settings": "設定",
+    "chatbot": "AIチューター"
+  },
+  "lesson": {
+    "title": "レッスン",
+    "play": "再生",
+    "pause": "一時停止",
+    "stop": "停止",
+    "tempo": "テンポ",
+    "loop": "ループ",
+    "difficulty": "難易度",
+    "section": "セクション",
+    "score": "スコア",
+    "accuracy": "精度",
+    "rhythm": "リズム",
+    "musicNotation": "楽譜",
+    "sheetMusicPlaceholder": "ここに楽譜が表示されます"
+  },
+  "difficulty": {
+    "beginner": "初心者",
+    "intermediate": "中級者",
+    "advanced": "上級者",
+    "expert": "エキスパート",
+    "beginnerDesc": "基本的なコードとシンプルなリズム",
+    "intermediateDesc": "バレーコードと複雑なリズム",
+    "advancedDesc": "ソロ、タッピング、上級テクニック",
+    "expertDesc": "詳細を含む完全なオリジナル版"
+  },
+  "fretboard": {
+    "title": "フレットボード",
+    "showNotes": "音符を表示",
+    "showFingers": "指を表示"
+  },
+  "player": {
+    "title": "プレーヤー",
+    "volume": "音量",
+    "metronome": "メトロノーム"
+  },
+  "pitchDetection": {
+    "title": "ピッチ検出",
+    "enableMicrophone": "マイクを有効にする",
+    "detecting": "検出中...",
+    "noInput": "入力なし",
+    "detectedNote": "検出された音符"
+  },
+  "scoring": {
+    "title": "採点",
+    "total": "合計",
+    "correct": "正解",
+    "incorrect": "不正解",
+    "percentage": "成功率"
+  },
+  "import": {
+    "title": "曲をインポート",
+    "selectFile": "ファイルを選択",
+    "uploadMusicXML": "MusicXMLをアップロード",
+    "parsing": "処理中...",
+    "success": "曲のインポートに成功しました",
+    "error": "インポートエラー"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "言語",
+    "theme": "テーマ",
+    "microphone": "マイク",
+    "audio": "オーディオ"
+  },
+  "chatbot": {
+    "title": "AIギターチューター",
+    "placeholder": "ギター演奏について何でも質問してください...",
+    "send": "送信",
+    "welcome": "こんにちは！私はあなたのAIギターチューターです。どのようにお手伝いできますか？"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "reset": "リセット",
+    "start": "開始",
+    "continue": "続ける",
+    "back": "戻る",
+    "next": "次へ"
+  }
+}

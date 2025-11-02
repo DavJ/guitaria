@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Apprentissage Interactif de la Guitare"
+  },
+  "home": {
+    "features": "Fonctionnalités"
+  },
+  "nav": {
+    "home": "Accueil",
+    "lessons": "Leçons",
+    "library": "Bibliothèque",
+    "settings": "Paramètres",
+    "chatbot": "Tuteur IA"
+  },
+  "lesson": {
+    "title": "Leçon",
+    "play": "Jouer",
+    "pause": "Pause",
+    "stop": "Arrêter",
+    "tempo": "Tempo",
+    "loop": "Boucle",
+    "difficulty": "Difficulté",
+    "section": "Section",
+    "score": "Score",
+    "accuracy": "Précision",
+    "rhythm": "Rythme",
+    "musicNotation": "Notation Musicale",
+    "sheetMusicPlaceholder": "La partition sera affichée ici"
+  },
+  "difficulty": {
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "expert": "Expert",
+    "beginnerDesc": "Accords de base et rythmes simples",
+    "intermediateDesc": "Accords barrés et rythmes complexes",
+    "advancedDesc": "Solos, tapping et techniques avancées",
+    "expertDesc": "Version originale complète avec détails"
+  },
+  "fretboard": {
+    "title": "Manche",
+    "showNotes": "Afficher les Notes",
+    "showFingers": "Afficher les Doigts"
+  },
+  "player": {
+    "title": "Lecteur",
+    "volume": "Volume",
+    "metronome": "Métronome"
+  },
+  "pitchDetection": {
+    "title": "Détection de Hauteur",
+    "enableMicrophone": "Activer le Microphone",
+    "detecting": "Détection en cours...",
+    "noInput": "Pas d'Entrée",
+    "detectedNote": "Note Détectée"
+  },
+  "scoring": {
+    "title": "Notation",
+    "total": "Total",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "percentage": "Taux de Réussite"
+  },
+  "import": {
+    "title": "Importer une Chanson",
+    "selectFile": "Sélectionner un Fichier",
+    "uploadMusicXML": "Télécharger MusicXML",
+    "parsing": "Traitement...",
+    "success": "Chanson importée avec succès",
+    "error": "Erreur d'importation"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "theme": "Thème",
+    "microphone": "Microphone",
+    "audio": "Audio"
+  },
+  "chatbot": {
+    "title": "Tuteur de Guitare IA",
+    "placeholder": "Posez n'importe quelle question sur la guitare...",
+    "send": "Envoyer",
+    "welcome": "Bonjour ! Je suis votre tuteur de guitare IA. Comment puis-je vous aider ?"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "reset": "Réinitialiser",
+    "start": "Démarrer",
+    "continue": "Continuer",
+    "back": "Retour",
+    "next": "Suivant"
+  }
+}

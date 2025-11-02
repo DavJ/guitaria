@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Интерактивное Обучение Гитаре"
+  },
+  "home": {
+    "features": "Возможности"
+  },
+  "nav": {
+    "home": "Главная",
+    "lessons": "Уроки",
+    "library": "Библиотека",
+    "settings": "Настройки",
+    "chatbot": "ИИ Репетитор"
+  },
+  "lesson": {
+    "title": "Урок",
+    "play": "Играть",
+    "pause": "Пауза",
+    "stop": "Стоп",
+    "tempo": "Темп",
+    "loop": "Повтор",
+    "difficulty": "Сложность",
+    "section": "Раздел",
+    "score": "Счёт",
+    "accuracy": "Точность",
+    "rhythm": "Ритм",
+    "musicNotation": "Нотная Запись",
+    "sheetMusicPlaceholder": "Ноты будут отображены здесь"
+  },
+  "difficulty": {
+    "beginner": "Начинающий",
+    "intermediate": "Средний",
+    "advanced": "Продвинутый",
+    "expert": "Эксперт",
+    "beginnerDesc": "Базовые аккорды и простые ритмы",
+    "intermediateDesc": "Баррэ-аккорды и сложные ритмы",
+    "advancedDesc": "Соло, теппинг и продвинутые техники",
+    "expertDesc": "Полная оригинальная версия с деталями"
+  },
+  "fretboard": {
+    "title": "Гриф",
+    "showNotes": "Показать Ноты",
+    "showFingers": "Показать Пальцы"
+  },
+  "player": {
+    "title": "Плеер",
+    "volume": "Громкость",
+    "metronome": "Метроном"
+  },
+  "pitchDetection": {
+    "title": "Определение Высоты",
+    "enableMicrophone": "Включить Микрофон",
+    "detecting": "Определение...",
+    "noInput": "Нет Входа",
+    "detectedNote": "Определённая Нота"
+  },
+  "scoring": {
+    "title": "Оценка",
+    "total": "Всего",
+    "correct": "Правильно",
+    "incorrect": "Неправильно",
+    "percentage": "Процент Успеха"
+  },
+  "import": {
+    "title": "Импорт Песни",
+    "selectFile": "Выбрать Файл",
+    "uploadMusicXML": "Загрузить MusicXML",
+    "parsing": "Обработка...",
+    "success": "Песня успешно импортирована",
+    "error": "Ошибка импорта"
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "theme": "Тема",
+    "microphone": "Микрофон",
+    "audio": "Аудио"
+  },
+  "chatbot": {
+    "title": "ИИ Учитель Гитары",
+    "placeholder": "Спросите что угодно об игре на гитаре...",
+    "send": "Отправить",
+    "welcome": "Привет! Я ваш ИИ учитель гитары. Как я могу вам помочь?"
+  },
+  "common": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "reset": "Сброс",
+    "start": "Старт",
+    "continue": "Продолжить",
+    "back": "Назад",
+    "next": "Далее"
+  }
+}

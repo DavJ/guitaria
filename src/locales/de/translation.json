@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Interaktives Gitarrenlernen"
+  },
+  "home": {
+    "features": "Funktionen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "lessons": "Lektionen",
+    "library": "Bibliothek",
+    "settings": "Einstellungen",
+    "chatbot": "KI-Tutor"
+  },
+  "lesson": {
+    "title": "Lektion",
+    "play": "Abspielen",
+    "pause": "Pause",
+    "stop": "Stoppen",
+    "tempo": "Tempo",
+    "loop": "Schleife",
+    "difficulty": "Schwierigkeit",
+    "section": "Abschnitt",
+    "score": "Punktzahl",
+    "accuracy": "Genauigkeit",
+    "rhythm": "Rhythmus",
+    "musicNotation": "Musiknotation",
+    "sheetMusicPlaceholder": "Noten werden hier angezeigt"
+  },
+  "difficulty": {
+    "beginner": "Anfänger",
+    "intermediate": "Fortgeschritten",
+    "advanced": "Profi",
+    "expert": "Experte",
+    "beginnerDesc": "Grundakkorde und einfache Rhythmen",
+    "intermediateDesc": "Barré-Akkorde und komplexe Rhythmen",
+    "advancedDesc": "Solos, Tapping und fortgeschrittene Techniken",
+    "expertDesc": "Vollständige Originalversion mit Details"
+  },
+  "fretboard": {
+    "title": "Griffbrett",
+    "showNotes": "Noten anzeigen",
+    "showFingers": "Finger anzeigen"
+  },
+  "player": {
+    "title": "Player",
+    "volume": "Lautstärke",
+    "metronome": "Metronom"
+  },
+  "pitchDetection": {
+    "title": "Tonhöhenerkennung",
+    "enableMicrophone": "Mikrofon aktivieren",
+    "detecting": "Erkennung läuft...",
+    "noInput": "Keine Eingabe",
+    "detectedNote": "Erkannte Note"
+  },
+  "scoring": {
+    "title": "Bewertung",
+    "total": "Gesamt",
+    "correct": "Richtig",
+    "incorrect": "Falsch",
+    "percentage": "Erfolgsrate"
+  },
+  "import": {
+    "title": "Lied importieren",
+    "selectFile": "Datei auswählen",
+    "uploadMusicXML": "MusicXML hochladen",
+    "parsing": "Wird verarbeitet...",
+    "success": "Lied erfolgreich importiert",
+    "error": "Importfehler"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "theme": "Thema",
+    "microphone": "Mikrofon",
+    "audio": "Audio"
+  },
+  "chatbot": {
+    "title": "KI-Gitarrenlehrer",
+    "placeholder": "Frage alles über Gitarre spielen...",
+    "send": "Senden",
+    "welcome": "Hallo! Ich bin dein KI-Gitarrenlehrer. Wie kann ich dir helfen?"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "reset": "Zurücksetzen",
+    "start": "Start",
+    "continue": "Weiter",
+    "back": "Zurück",
+    "next": "Weiter"
+  }
+}

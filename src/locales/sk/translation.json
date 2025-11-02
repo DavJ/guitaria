@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Interaktívne učenie gitary"
+  },
+  "home": {
+    "features": "Funkcie"
+  },
+  "nav": {
+    "home": "Domov",
+    "lessons": "Lekcie",
+    "library": "Knižnica",
+    "settings": "Nastavenia",
+    "chatbot": "AI Tutor"
+  },
+  "lesson": {
+    "title": "Lekcia",
+    "play": "Prehrať",
+    "pause": "Pozastaviť",
+    "stop": "Zastaviť",
+    "tempo": "Tempo",
+    "loop": "Slučka",
+    "difficulty": "Obtiažnosť",
+    "section": "Sekcia",
+    "score": "Skóre",
+    "accuracy": "Presnosť",
+    "rhythm": "Rytmus",
+    "musicNotation": "Notový zápis",
+    "sheetMusicPlaceholder": "Tu sa zobrazí notácia"
+  },
+  "difficulty": {
+    "beginner": "Začiatočník",
+    "intermediate": "Mierne pokročilý",
+    "advanced": "Pokročilý",
+    "expert": "Expert",
+    "beginnerDesc": "Základné akordy a jednoduché rytmy",
+    "intermediateDesc": "Barre akordy a zložitejšie rytmy",
+    "advancedDesc": "Sólá, tapping a pokročilé techniky",
+    "expertDesc": "Kompletná originálna verzia s detailmi"
+  },
+  "fretboard": {
+    "title": "Hmatník",
+    "showNotes": "Zobraziť noty",
+    "showFingers": "Zobraziť prsty"
+  },
+  "player": {
+    "title": "Prehrávač",
+    "volume": "Hlasitosť",
+    "metronome": "Metronóm"
+  },
+  "pitchDetection": {
+    "title": "Detekcia tónu",
+    "enableMicrophone": "Povoliť mikrofón",
+    "detecting": "Detekuje sa...",
+    "noInput": "Žiadny vstup",
+    "detectedNote": "Detekovaná nota"
+  },
+  "scoring": {
+    "title": "Hodnotenie",
+    "total": "Celkom",
+    "correct": "Správne",
+    "incorrect": "Nesprávne",
+    "percentage": "Úspešnosť"
+  },
+  "import": {
+    "title": "Import skladby",
+    "selectFile": "Vybrať súbor",
+    "uploadMusicXML": "Nahrať MusicXML",
+    "parsing": "Spracováva sa...",
+    "success": "Skladba úspešne importovaná",
+    "error": "Chyba pri importe"
+  },
+  "settings": {
+    "title": "Nastavenia",
+    "language": "Jazyk",
+    "theme": "Téma",
+    "microphone": "Mikrofón",
+    "audio": "Zvuk"
+  },
+  "chatbot": {
+    "title": "AI Gitarový Tutor",
+    "placeholder": "Opýtajte sa na čokoľvek o hre na gitare...",
+    "send": "Odoslať",
+    "welcome": "Ahoj! Som váš AI gitarový tutor. Ako vám môžem pomôcť?"
+  },
+  "common": {
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "close": "Zavrieť",
+    "reset": "Reset",
+    "start": "Štart",
+    "continue": "Pokračovať",
+    "back": "Späť",
+    "next": "Ďalej"
+  }
+}
