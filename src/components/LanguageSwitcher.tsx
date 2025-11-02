@@ -14,13 +14,17 @@ const LanguageSwitcher: React.FC = () => {
     { code: 'es', name: 'Español', flag: '🇪🇸' },
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
     { code: 'ru', name: 'Русский', flag: '🇷🇺' },
     { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'ja', name: '日本語', flag: '🇯🇵' },
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
   ];
 
   const currentLang = languages.find(lang => lang.code === language) || languages[0];
 
-  const handleLanguageChange = (lang: 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh') => {
+  const handleLanguageChange = (lang: 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh' | 'ar' | 'hi' | 'ja' | 'it') => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
     setIsOpen(false);
@@ -44,7 +48,7 @@ const LanguageSwitcher: React.FC = () => {
           {languages.map((lang) => (
             <button
               key={lang.code}
-              onClick={() => handleLanguageChange(lang.code as 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh')}
+              onClick={() => handleLanguageChange(lang.code as 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh' | 'ar' | 'hi' | 'ja' | 'it')}
               className={`w-full px-4 py-3 text-left hover:bg-gray-700 transition-colors flex items-center gap-3 ${
                 language === lang.code ? 'bg-gray-700 text-blue-400' : 'text-white'
               }`}

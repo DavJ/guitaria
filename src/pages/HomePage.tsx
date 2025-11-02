@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import SongImport from '../modules/SongImport';
 import ChatBot from '../components/ChatBot';
+import GuitarBackground from '../components/GuitarBackground';
 import { useAppStore } from '../store/appStore';
 
 const HomePage: React.FC = () => {
@@ -18,23 +19,65 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 text-9xl transform -rotate-12">🎸</div>
-        <div className="absolute bottom-20 right-10 text-9xl transform rotate-12">🎵</div>
-        <div className="absolute top-1/2 left-1/4 text-6xl opacity-50">🎼</div>
-        <div className="absolute top-1/3 right-1/4 text-6xl opacity-50">🎹</div>
-      </div>
+      {/* Guitar-themed background */}
+      <GuitarBackground />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         {/* Hero Section with guitar theme */}
         <div className="text-center mb-16">
-          <div className="inline-block mb-6 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-600 blur-3xl opacity-30 animate-pulse" />
-            <h1 className="relative text-7xl md:text-8xl font-black mb-4 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 bg-clip-text text-transparent drop-shadow-2xl">
-              🎸 {t('app.name')}
-            </h1>
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-600 blur-3xl opacity-30 animate-pulse" />
+              <div className="relative transform scale-150 mb-4">
+                <svg
+                  width="120"
+                  height="120"
+                  viewBox="0 0 100 100"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="drop-shadow-2xl"
+                >
+                  <ellipse cx="65" cy="65" rx="28" ry="32" fill="url(#heroGuitarGradient)" stroke="#d97706" strokeWidth="2" />
+                  <circle cx="65" cy="65" r="10" fill="#1f2937" stroke="#92400e" strokeWidth="1.5" />
+                  <circle cx="65" cy="65" r="7" fill="none" stroke="#b45309" strokeWidth="1" />
+                  <rect x="25" y="22" width="12" height="35" rx="2" fill="url(#heroNeckGradient)" stroke="#92400e" strokeWidth="1.5" />
+                  <line x1="25" y1="30" x2="37" y2="30" stroke="#78716c" strokeWidth="1" />
+                  <line x1="25" y1="38" x2="37" y2="38" stroke="#78716c" strokeWidth="1" />
+                  <line x1="25" y1="46" x2="37" y2="46" stroke="#78716c" strokeWidth="1" />
+                  <line x1="28" y1="20" x2="62" y2="58" stroke="#e5e5e5" strokeWidth="0.5" opacity="0.8" />
+                  <line x1="30" y1="20" x2="64" y2="58" stroke="#e5e5e5" strokeWidth="0.5" opacity="0.8" />
+                  <line x1="32" y1="20" x2="66" y2="58" stroke="#e5e5e5" strokeWidth="0.5" opacity="0.8" />
+                  <line x1="34" y1="20" x2="68" y2="58" stroke="#e5e5e5" strokeWidth="0.6" opacity="0.8" />
+                  <rect x="23" y="15" width="16" height="8" rx="2" fill="url(#heroHeadstockGradient)" stroke="#92400e" strokeWidth="1.5" />
+                  <circle cx="26" cy="17" r="1.5" fill="#d4d4d4" />
+                  <circle cx="30" cy="17" r="1.5" fill="#d4d4d4" />
+                  <circle cx="34" cy="17" r="1.5" fill="#d4d4d4" />
+                  <circle cx="26" cy="21" r="1.5" fill="#d4d4d4" />
+                  <circle cx="30" cy="21" r="1.5" fill="#d4d4d4" />
+                  <circle cx="34" cy="21" r="1.5" fill="#d4d4d4" />
+                  <defs>
+                    <linearGradient id="heroGuitarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#d97706" />
+                      <stop offset="50%" stopColor="#f59e0b" />
+                      <stop offset="100%" stopColor="#b45309" />
+                    </linearGradient>
+                    <linearGradient id="heroNeckGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#78350f" />
+                      <stop offset="50%" stopColor="#92400e" />
+                      <stop offset="100%" stopColor="#78350f" />
+                    </linearGradient>
+                    <linearGradient id="heroHeadstockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#92400e" />
+                      <stop offset="100%" stopColor="#78350f" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
           </div>
+          <h1 className="text-6xl md:text-7xl font-black mb-4 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 bg-clip-text text-transparent drop-shadow-2xl">
+            {t('app.name')}
+          </h1>
           <p className="text-3xl font-light text-amber-200 mb-4">{t('app.tagline')}</p>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Master your favorite songs with interactive lessons, real-time feedback, and AI-powered guidance

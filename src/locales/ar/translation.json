@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "تعلم الجيتار التفاعلي"
+  },
+  "home": {
+    "features": "المميزات"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "lessons": "الدروس",
+    "library": "المكتبة",
+    "settings": "الإعدادات",
+    "chatbot": "مدرب الذكاء الاصطناعي"
+  },
+  "lesson": {
+    "title": "الدرس",
+    "play": "تشغيل",
+    "pause": "إيقاف مؤقت",
+    "stop": "إيقاف",
+    "tempo": "الإيقاع",
+    "loop": "تكرار",
+    "difficulty": "الصعوبة",
+    "section": "القسم",
+    "score": "النتيجة",
+    "accuracy": "الدقة",
+    "rhythm": "الإيقاع",
+    "musicNotation": "التدوين الموسيقي",
+    "sheetMusicPlaceholder": "سيتم عرض النوتة الموسيقية هنا"
+  },
+  "difficulty": {
+    "beginner": "مبتدئ",
+    "intermediate": "متوسط",
+    "advanced": "متقدم",
+    "expert": "خبير",
+    "beginnerDesc": "الأوتار الأساسية والإيقاعات البسيطة",
+    "intermediateDesc": "أوتار باري والإيقاعات المعقدة",
+    "advancedDesc": "السولو والتابينج والتقنيات المتقدمة",
+    "expertDesc": "النسخة الأصلية الكاملة مع التفاصيل"
+  },
+  "fretboard": {
+    "title": "لوحة الحنق",
+    "showNotes": "إظهار النوتات",
+    "showFingers": "إظهار الأصابع"
+  },
+  "player": {
+    "title": "المشغل",
+    "volume": "مستوى الصوت",
+    "metronome": "المترونوم"
+  },
+  "pitchDetection": {
+    "title": "كشف النغمة",
+    "enableMicrophone": "تفعيل الميكروفون",
+    "detecting": "جاري الكشف...",
+    "noInput": "لا يوجد إدخال",
+    "detectedNote": "النوتة المكتشفة"
+  },
+  "scoring": {
+    "title": "التقييم",
+    "total": "المجموع",
+    "correct": "صحيح",
+    "incorrect": "خطأ",
+    "percentage": "معدل النجاح"
+  },
+  "import": {
+    "title": "استيراد أغنية",
+    "selectFile": "اختر ملف",
+    "uploadMusicXML": "تحميل MusicXML",
+    "parsing": "جاري المعالجة...",
+    "success": "تم استيراد الأغنية بنجاح",
+    "error": "خطأ في الاستيراد"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "theme": "السمة",
+    "microphone": "الميكروفون",
+    "audio": "الصوت"
+  },
+  "chatbot": {
+    "title": "مدرب الجيتار بالذكاء الاصطناعي",
+    "placeholder": "اسأل أي شيء عن العزف على الجيتار...",
+    "send": "إرسال",
+    "welcome": "مرحبا! أنا مدرب الجيتار بالذكاء الاصطناعي. كيف يمكنني مساعدتك؟"
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "reset": "إعادة تعيين",
+    "start": "ابدأ",
+    "continue": "متابعة",
+    "back": "رجوع",
+    "next": "التالي"
+  }
+}

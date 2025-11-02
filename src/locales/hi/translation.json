@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "इंटरैक्टिव गिटार सीखना"
+  },
+  "home": {
+    "features": "विशेषताएं"
+  },
+  "nav": {
+    "home": "होम",
+    "lessons": "पाठ",
+    "library": "पुस्तकालय",
+    "settings": "सेटिंग्स",
+    "chatbot": "एआई ट्यूटर"
+  },
+  "lesson": {
+    "title": "पाठ",
+    "play": "चलाएं",
+    "pause": "रोकें",
+    "stop": "बंद करें",
+    "tempo": "गति",
+    "loop": "लूप",
+    "difficulty": "कठिनाई",
+    "section": "अनुभाग",
+    "score": "स्कोर",
+    "accuracy": "सटीकता",
+    "rhythm": "लय",
+    "musicNotation": "संगीत संकेतन",
+    "sheetMusicPlaceholder": "शीट संगीत यहां प्रदर्शित होगा"
+  },
+  "difficulty": {
+    "beginner": "शुरुआती",
+    "intermediate": "मध्यवर्ती",
+    "advanced": "उन्नत",
+    "expert": "विशेषज्ञ",
+    "beginnerDesc": "बुनियादी तार और सरल लय",
+    "intermediateDesc": "बैरे कॉर्ड्स और जटिल लय",
+    "advancedDesc": "सोलो, टैपिंग और उन्नत तकनीकें",
+    "expertDesc": "विवरण के साथ पूर्ण मूल संस्करण"
+  },
+  "fretboard": {
+    "title": "फ्रेटबोर्ड",
+    "showNotes": "नोट्स दिखाएं",
+    "showFingers": "उंगलियां दिखाएं"
+  },
+  "player": {
+    "title": "प्लेयर",
+    "volume": "वॉल्यूम",
+    "metronome": "मेट्रोनोम"
+  },
+  "pitchDetection": {
+    "title": "पिच डिटेक्शन",
+    "enableMicrophone": "माइक्रोफ़ोन सक्षम करें",
+    "detecting": "पता लगा रहा है...",
+    "noInput": "कोई इनपुट नहीं",
+    "detectedNote": "पता लगाया गया नोट"
+  },
+  "scoring": {
+    "title": "स्कोरिंग",
+    "total": "कुल",
+    "correct": "सही",
+    "incorrect": "गलत",
+    "percentage": "सफलता दर"
+  },
+  "import": {
+    "title": "गाना आयात करें",
+    "selectFile": "फ़ाइल चुनें",
+    "uploadMusicXML": "MusicXML अपलोड करें",
+    "parsing": "प्रोसेस हो रहा है...",
+    "success": "गाना सफलतापूर्वक आयात किया गया",
+    "error": "आयात त्रुटि"
+  },
+  "settings": {
+    "title": "सेटिंग्स",
+    "language": "भाषा",
+    "theme": "थीम",
+    "microphone": "माइक्रोफ़ोन",
+    "audio": "ऑडियो"
+  },
+  "chatbot": {
+    "title": "एआई गिटार ट्यूटर",
+    "placeholder": "गिटार बजाने के बारे में कुछ भी पूछें...",
+    "send": "भेजें",
+    "welcome": "नमस्ते! मैं आपका एआई गिटार ट्यूटर हूं। मैं आपकी कैसे मदद कर सकता हूं?"
+  },
+  "common": {
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "close": "बंद करें",
+    "reset": "रीसेट",
+    "start": "शुरू करें",
+    "continue": "जारी रखें",
+    "back": "वापस",
+    "next": "अगला"
+  }
+}

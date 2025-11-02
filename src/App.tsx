@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import HomePage from './pages/HomePage';
 import LessonPage from './pages/LessonPage';
 import LanguageSwitcher from './components/LanguageSwitcher';
+import Logo from './components/Logo';
 
 function App() {
   const { t } = useTranslation();
@@ -11,12 +12,12 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-900">
         {/* Navigation Bar with guitar theme */}
-        <nav className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-b border-amber-700/30 shadow-lg shadow-amber-500/5">
-          <div className="max-w-7xl mx-auto px-6 py-4">
+        <nav className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-b border-amber-700/30 shadow-lg shadow-amber-500/5 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-6 py-3">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-6">
-                <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent hover:from-amber-500 hover:to-orange-600 transition-all">
-                  🎸 {t('app.name')}
+                <Link to="/" className="hover:scale-105 transition-transform">
+                  <Logo showText={true} />
                 </Link>
                 <div className="hidden md:flex gap-4">
                   <Link

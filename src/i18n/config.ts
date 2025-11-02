@@ -8,6 +8,10 @@ import deTranslation from '../locales/de/translation.json';
 import frTranslation from '../locales/fr/translation.json';
 import ruTranslation from '../locales/ru/translation.json';
 import zhTranslation from '../locales/zh/translation.json';
+import arTranslation from '../locales/ar/translation.json';
+import hiTranslation from '../locales/hi/translation.json';
+import jaTranslation from '../locales/ja/translation.json';
+import itTranslation from '../locales/it/translation.json';
 
 const resources = {
   cs: {
@@ -33,6 +37,18 @@ const resources = {
   },
   zh: {
     translation: zhTranslation,
+  },
+  ar: {
+    translation: arTranslation,
+  },
+  hi: {
+    translation: hiTranslation,
+  },
+  ja: {
+    translation: jaTranslation,
+  },
+  it: {
+    translation: itTranslation,
   },
 };
 

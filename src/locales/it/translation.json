@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Guitaria",
+    "tagline": "Apprendimento Interattivo della Chitarra"
+  },
+  "home": {
+    "features": "Caratteristiche"
+  },
+  "nav": {
+    "home": "Home",
+    "lessons": "Lezioni",
+    "library": "Libreria",
+    "settings": "Impostazioni",
+    "chatbot": "Tutor IA"
+  },
+  "lesson": {
+    "title": "Lezione",
+    "play": "Riproduci",
+    "pause": "Pausa",
+    "stop": "Ferma",
+    "tempo": "Tempo",
+    "loop": "Loop",
+    "difficulty": "Difficoltà",
+    "section": "Sezione",
+    "score": "Punteggio",
+    "accuracy": "Precisione",
+    "rhythm": "Ritmo",
+    "musicNotation": "Notazione Musicale",
+    "sheetMusicPlaceholder": "Lo spartito verrà visualizzato qui"
+  },
+  "difficulty": {
+    "beginner": "Principiante",
+    "intermediate": "Intermedio",
+    "advanced": "Avanzato",
+    "expert": "Esperto",
+    "beginnerDesc": "Accordi di base e ritmi semplici",
+    "intermediateDesc": "Accordi barré e ritmi complessi",
+    "advancedDesc": "Assolo, tapping e tecniche avanzate",
+    "expertDesc": "Versione originale completa con dettagli"
+  },
+  "fretboard": {
+    "title": "Tastiera",
+    "showNotes": "Mostra Note",
+    "showFingers": "Mostra Dita"
+  },
+  "player": {
+    "title": "Lettore",
+    "volume": "Volume",
+    "metronome": "Metronomo"
+  },
+  "pitchDetection": {
+    "title": "Rilevamento Tonalità",
+    "enableMicrophone": "Attiva Microfono",
+    "detecting": "Rilevamento...",
+    "noInput": "Nessun Input",
+    "detectedNote": "Nota Rilevata"
+  },
+  "scoring": {
+    "title": "Punteggio",
+    "total": "Totale",
+    "correct": "Corretto",
+    "incorrect": "Errato",
+    "percentage": "Tasso di Successo"
+  },
+  "import": {
+    "title": "Importa Canzone",
+    "selectFile": "Seleziona File",
+    "uploadMusicXML": "Carica MusicXML",
+    "parsing": "Elaborazione...",
+    "success": "Canzone importata con successo",
+    "error": "Errore di importazione"
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "language": "Lingua",
+    "theme": "Tema",
+    "microphone": "Microfono",
+    "audio": "Audio"
+  },
+  "chatbot": {
+    "title": "Tutor di Chitarra IA",
+    "placeholder": "Chiedi qualsiasi cosa sulla chitarra...",
+    "send": "Invia",
+    "welcome": "Ciao! Sono il tuo tutor di chitarra IA. Come posso aiutarti?"
+  },
+  "common": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "reset": "Ripristina",
+    "start": "Inizia",
+    "continue": "Continua",
+    "back": "Indietro",
+    "next": "Avanti"
+  }
+}
