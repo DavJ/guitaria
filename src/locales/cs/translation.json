@@ -27,7 +27,11 @@
     "accuracy": "Přesnost",
     "rhythm": "Rytmus",
     "musicNotation": "Notový zápis",
-    "sheetMusicPlaceholder": "Zde bude zobrazena notace"
+    "sheetMusicPlaceholder": "Zde bude zobrazena notace",
+    "displayOptions": "Možnosti zobrazení",
+    "showChords": "Zobrazit akordy",
+    "showLyrics": "Zobrazit text",
+    "showFingering": "Zobrazit prstoklad"
   },
   "difficulty": {
     "beginner": "Začátečník",
