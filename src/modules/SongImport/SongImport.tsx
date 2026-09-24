@@ -32,6 +32,28 @@ const SongImport: React.FC = () => {
     }
   };
 
+  const handleLoadDemo = async () => {
+    setIsProcessing(true);
+    setMessage(null);
+
+    try {
+      const response = await fetch('/demo-lesson.musicxml');
+      if (!response.ok) {
+        throw new Error('Failed to fetch demo lesson');
+      }
+      const xmlText = await response.text();
+      const song = parseMusicXml(xmlText);
+      setCurrentSong(song);
+      resetScore(song.notes.filter((note) => !note.isRest).length);
+      setMessage({ type: 'success', text: `${t('import.success')}: ${song.title}` });
+    } catch (error) {
+      console.error('Demo load error:', error);
+      setMessage({ type: 'error', text: t('import.error') });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4">{t('import.title')}</h2>
@@ -57,6 +79,18 @@ const SongImport: React.FC = () => {
           </label>
 
           <p className="mt-4 text-sm text-gray-400">{t('import.selectFile')} (MusicXML)</p>
+        </div>
+
+        <div className="text-center">
+          <button
+            onClick={handleLoadDemo}
+            disabled={isProcessing}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              isProcessing ? 'bg-gray-600 cursor-not-allowed' : 'bg-amber-600 hover:bg-amber-700'
+            }`}
+          >
+            🎸 {t('import.loadDemo')}
+          </button>
         </div>
 
         {message && (

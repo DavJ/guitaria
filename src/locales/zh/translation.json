@@ -68,7 +68,8 @@
     "uploadMusicXML": "上传MusicXML",
     "parsing": "处理中...",
     "success": "歌曲导入成功",
-    "error": "导入错误"
+    "error": "导入错误",
+    "loadDemo": "Load Demo Lesson"
   },
   "settings": {
     "title": "设置",

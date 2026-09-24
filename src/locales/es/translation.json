@@ -68,7 +68,8 @@
     "uploadMusicXML": "Cargar MusicXML",
     "parsing": "Procesando...",
     "success": "Canción importada exitosamente",
-    "error": "Error de importación"
+    "error": "Error de importación",
+    "loadDemo": "Load Demo Lesson"
   },
   "settings": {
     "title": "Configuración",
