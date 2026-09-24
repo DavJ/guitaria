@@ -23,6 +23,7 @@ export function usePitchDetector(enabled: boolean, targetMidi?: number | null) {
   const detectorRef = useRef<Pitchy.PitchDetector<Float32Array> | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number | null>(null);
+  const bufferRef = useRef<Float32Array | null>(null);
 
   const cleanup = useCallback(async () => {
     if (rafRef.current !== null) {
@@ -54,8 +55,11 @@ export function usePitchDetector(enabled: boolean, targetMidi?: number | null) {
       return;
     }
 
-    const buffer = new Float32Array(analyser.fftSize);
-    analyser.getFloatTimeDomainData(buffer);
+    if (!bufferRef.current || bufferRef.current.length !== analyser.fftSize) {
+      bufferRef.current = new Float32Array(analyser.fftSize);
+    }
+    const buffer = bufferRef.current;
+    analyser.getFloatTimeDomainData(buffer as unknown as Float32Array<ArrayBuffer>);
     const [frequency, clarity] = detector.findPitch(buffer, context.sampleRate);
 
     if (clarity > CLARITY_THRESHOLD && frequency > 0) {

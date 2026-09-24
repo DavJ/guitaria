@@ -17,6 +17,13 @@ function sanitizeText(value: string | null | undefined): string | undefined {
   return value.replace(/[<>&]/g, '').replace(/[\u0000-\u001F\u007F]/g, '').trim();
 }
 
+function sanitizeXmlInput(xml: string): string {
+  return xml
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, '')
+    .replace(/\son[a-z]+=/gi, ' data-removed=');
+}
+
 function parseInteger(value: string | null | undefined, fallback: number): number {
   const parsed = value ? Number.parseInt(value, 10) : Number.NaN;
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -83,8 +90,9 @@ function buildMeasure(index: number, startTime: number, endTime: number): Measur
 }
 
 export function parseMusicXml(xmlText: string): Song {
+  const sanitizedXml = sanitizeXmlInput(xmlText);
   const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+  const xmlDoc = parser.parseFromString(sanitizedXml, 'application/xml');
   const parserError = xmlDoc.querySelector('parsererror');
 
   if (parserError) {
@@ -275,6 +283,6 @@ export function parseMusicXml(xmlText: string): Song {
     sections: normalizedSections,
     chords: sortedChords,
     lyrics,
-    sourceXml: xmlText,
+    sourceXml: sanitizedXml,
   };
 }

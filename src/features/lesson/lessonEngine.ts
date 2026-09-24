@@ -134,6 +134,11 @@ export function calculateScore(song: Song, progress: LessonProgress): ScoreData 
   const totalNotes = getPlayableNotes(song).length;
   const correctNotes = Object.values(progress.noteStatuses).filter((status) => status === 'accepted').length;
   const missedNotes = Object.values(progress.noteStatuses).filter((status) => status === 'missed').length;
+  const latestEvaluationByNote = progress.evaluations.reduce<Record<string, NoteEvaluation>>((acc, evaluation) => {
+    acc[evaluation.noteId] = evaluation;
+    return acc;
+  }, {});
+  const perNoteEvaluations = Object.values(latestEvaluationByNote);
   const pitchErrors = progress.evaluations
     .map((evaluation) => evaluation.pitchErrorCents)
     .filter((value): value is number => typeof value === 'number');
@@ -141,8 +146,8 @@ export function calculateScore(song: Song, progress: LessonProgress): ScoreData 
     .map((evaluation) => evaluation.timingErrorMs)
     .filter((value): value is number => typeof value === 'number');
 
-  const pitchCorrectCount = progress.evaluations.filter((evaluation) => evaluation.pitchCorrect).length;
-  const timingCorrectCount = progress.evaluations.filter((evaluation) => evaluation.timingCorrect).length;
+  const pitchCorrectCount = perNoteEvaluations.filter((evaluation) => evaluation.pitchCorrect).length;
+  const timingCorrectCount = perNoteEvaluations.filter((evaluation) => evaluation.timingCorrect).length;
 
   return {
     totalNotes,
