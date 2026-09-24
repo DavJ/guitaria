@@ -4,30 +4,32 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import InputPanel from '../features/AIComposer/InputPanel';
 import Editor from '../features/AIComposer/Editor';
 import PreviewPlayer from '../features/AIComposer/PreviewPlayer';
-import { LessonPlayer } from '../features/LessonMode';
 import type {
   Composition,
   CompositionSection,
   AICommand,
   CompositionStyle
 } from '../features/AIComposer/types';
-import type { Song } from '../types/Song';
 import { createEmptyComposition, generateId } from '../features/AIComposer/composerUtils';
-import { generateMelody, transformMelodyStyle } from '../features/AIComposer/MelodyGenerator';
-import { generateSectionLyrics, refineLyrics } from '../features/AIComposer/LyricAssistant';
+import { transformMelodyStyle } from '../features/AIComposer/MelodyGenerator';
 import { exportComposition } from '../features/AIComposer/Exporter';
 import { compositionToSong } from '../utils/conversionUtils';
 import { saveSong } from '../utils/songStorage';
+import { LocalComposerProvider } from '../features/AIComposer/providers';
+import { useAppStore } from '../store/appStore';
 
 const AIComposerPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { setCurrentSong } = useAppStore();
+  const composerProvider = new LocalComposerProvider();
   const [composition, setComposition] = useState<Composition>(createEmptyComposition());
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState<'input' | 'edit' | 'preview'>('input');
-  const [lessonSong, setLessonSong] = useState<Song | null>(null);
 
   const handleInputCaptured = async () => {
     setIsGenerating(true);
@@ -50,7 +52,7 @@ const AIComposerPage: React.FC = () => {
             { name: 'F', root: 'F', quality: '', duration: 2, time: 4 },
             { name: 'G', root: 'G', quality: '', duration: 2, time: 6 }
           ],
-          melody: await generateMelody({
+          melody: await composerProvider.generateMelody({
             style: composition.style,
             length: 16,
             complexity: 'moderate'
@@ -69,12 +71,12 @@ const AIComposerPage: React.FC = () => {
             { name: 'Am', root: 'A', quality: 'm', duration: 2, time: 12 },
             { name: 'F', root: 'F', quality: '', duration: 2, time: 14 }
           ],
-          melody: await generateMelody({
+          melody: await composerProvider.generateMelody({
             style: composition.style,
             length: 32,
             complexity: 'moderate'
           }),
-          lyrics: await generateSectionLyrics('verse', {
+          lyrics: await composerProvider.generateSectionLyrics('verse', {
             theme: 'love',
             emotion: 'happy',
             language: 'en'
@@ -92,12 +94,12 @@ const AIComposerPage: React.FC = () => {
             { name: 'G', root: 'G', quality: '', duration: 2, time: 28 },
             { name: 'Am', root: 'A', quality: 'm', duration: 2, time: 30 }
           ],
-          melody: await generateMelody({
+          melody: await composerProvider.generateMelody({
             style: composition.style,
             length: 24,
             complexity: 'moderate'
           }),
-          lyrics: await generateSectionLyrics('chorus', {
+          lyrics: await composerProvider.generateSectionLyrics('chorus', {
             theme: 'love',
             emotion: 'happy',
             language: 'en'
@@ -158,12 +160,12 @@ const AIComposerPage: React.FC = () => {
               : 0,
             endTime: 0,
             chords: [],
-            melody: await generateMelody({
+            melody: await composerProvider.generateMelody({
               style: updatedComposition.style,
               length: 16,
               complexity: 'moderate'
             }),
-            lyrics: await generateSectionLyrics('bridge', {
+            lyrics: await composerProvider.generateSectionLyrics('bridge', {
               emotion: 'inspirational',
               language: 'en'
             })
@@ -181,7 +183,7 @@ const AIComposerPage: React.FC = () => {
                 if (section.id === command.target && section.lyrics) {
                   return {
                     ...section,
-                    lyrics: await refineLyrics(section.lyrics, instruction)
+                    lyrics: await composerProvider.refineLyrics(section.lyrics, instruction)
                   };
                 }
                 return section;
@@ -215,22 +217,14 @@ const AIComposerPage: React.FC = () => {
     try {
       const song = compositionToSong(composition);
       saveSong(song);
-      setLessonSong(song);
+      setCurrentSong(song);
+      navigate('/lesson');
     } catch (error) {
       console.error('Failed to start lesson:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       alert(`Failed to start lesson: ${errorMessage}. Please try again or check if your browser supports localStorage.`);
     }
   };
-
-  const handleBackFromLesson = () => {
-    setLessonSong(null);
-  };
-
-  // If in lesson mode, show the lesson player
-  if (lessonSong) {
-    return <LessonPlayer song={lessonSong} onBack={handleBackFromLesson} />;
-  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">

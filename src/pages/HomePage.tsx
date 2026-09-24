@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
           </h1>
           <p className="text-3xl font-light text-amber-200 mb-4">{t('app.tagline')}</p>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Master your favorite songs with interactive lessons, real-time feedback, and AI-powered guidance
+            Master your favorite songs with interactive lessons, real-time feedback, and built-in tutor guidance
           </p>
         </div>
 
@@ -198,8 +198,8 @@ const HomePage: React.FC = () => {
 
           <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/30 p-6 rounded-xl border border-purple-500/30 backdrop-blur-sm">
             <div className="text-3xl mb-3">🤖</div>
-            <h3 className="font-bold text-lg mb-2 text-purple-400">AI Guidance</h3>
-            <p className="text-sm text-gray-400">Ask our AI tutor any guitar questions anytime</p>
+            <h3 className="font-bold text-lg mb-2 text-purple-400">Tutor Guidance</h3>
+            <p className="text-sm text-gray-400">Ask the built-in tutor for guitar practice tips anytime</p>
           </div>
 
           <div className="bg-gradient-to-br from-green-900/30 to-green-800/30 p-6 rounded-xl border border-green-500/30 backdrop-blur-sm">

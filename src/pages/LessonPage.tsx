@@ -1,8 +1,8 @@
 import React from 'react';
-import LessonView from '../modules/LessonView';
+import LessonPageView from '../features/lesson/LessonPage';
 
 const LessonPage: React.FC = () => {
-  return <LessonView />;
+  return <LessonPageView />;
 };
 
 export default LessonPage;

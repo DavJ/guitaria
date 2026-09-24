@@ -1,102 +1,108 @@
 import { create } from 'zustand';
+import type { Song } from '../domain/Song';
 
-export interface Note {
-  pitch: string;
-  duration: number;
-  time: number;
-  fret?: number;
-  string?: number;
-}
+export type AppLanguage = 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh' | 'ar' | 'hi' | 'ja' | 'it';
 
-export interface Song {
-  id: string;
-  title: string;
-  artist: string;
-  notes: Note[];
-  sections: Section[];
-  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-}
-
-export interface Section {
-  id: string;
-  name: string;
-  startTime: number;
-  endTime: number;
+export interface PitchSnapshot {
+  frequency: number | null;
+  midi: number | null;
+  note: string | null;
+  centsError: number | null;
+  clarity: number;
+  timestamp: number | null;
 }
 
 export interface ScoreData {
   totalNotes: number;
   correctNotes: number;
-  accuracy: number;
-  rhythmAccuracy: number;
+  missedNotes: number;
+  pitchAccuracy: number;
+  timingAccuracy: number;
+  averageCentsError: number;
+  averageTimingErrorMs: number;
 }
 
 interface AppState {
   currentSong: Song | null;
   isPlaying: boolean;
   currentTime: number;
-  tempo: number;
+  tempoMultiplier: number;
   volume: number;
   loopEnabled: boolean;
   loopStart: number;
   loopEnd: number;
   difficulty: 'beginner' | 'intermediate' | 'advanced' | 'expert';
   microphoneEnabled: boolean;
-  detectedPitch: string | null;
+  detectedPitch: PitchSnapshot;
   score: ScoreData;
-  language: 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh' | 'ar' | 'hi' | 'ja' | 'it';
-  
-  // Actions
+  language: AppLanguage;
+
   setCurrentSong: (song: Song | null) => void;
   setIsPlaying: (playing: boolean) => void;
   setCurrentTime: (time: number) => void;
-  setTempo: (tempo: number) => void;
+  setTempoMultiplier: (multiplier: number) => void;
   setVolume: (volume: number) => void;
   setLoopEnabled: (enabled: boolean) => void;
   setLoopRange: (start: number, end: number) => void;
-  setDifficulty: (difficulty: 'beginner' | 'intermediate' | 'advanced' | 'expert') => void;
+  setDifficulty: (difficulty: AppState['difficulty']) => void;
   setMicrophoneEnabled: (enabled: boolean) => void;
-  setDetectedPitch: (pitch: string | null) => void;
+  setDetectedPitch: (pitch: PitchSnapshot) => void;
   updateScore: (score: Partial<ScoreData>) => void;
-  resetScore: () => void;
-  setLanguage: (lang: 'cs' | 'en' | 'sk' | 'es' | 'de' | 'fr' | 'ru' | 'zh' | 'ar' | 'hi' | 'ja' | 'it') => void;
+  resetScore: (totalNotes?: number) => void;
+  setLanguage: (lang: AppLanguage) => void;
 }
 
 const initialScore: ScoreData = {
   totalNotes: 0,
   correctNotes: 0,
-  accuracy: 0,
-  rhythmAccuracy: 0,
+  missedNotes: 0,
+  pitchAccuracy: 0,
+  timingAccuracy: 0,
+  averageCentsError: 0,
+  averageTimingErrorMs: 0,
+};
+
+const emptyPitch: PitchSnapshot = {
+  frequency: null,
+  midi: null,
+  note: null,
+  centsError: null,
+  clarity: 0,
+  timestamp: null,
 };
 
 export const useAppStore = create<AppState>((set) => ({
   currentSong: null,
   isPlaying: false,
   currentTime: 0,
-  tempo: 100,
+  tempoMultiplier: 1,
   volume: 0.8,
   loopEnabled: false,
   loopStart: 0,
   loopEnd: 0,
   difficulty: 'beginner',
   microphoneEnabled: false,
-  detectedPitch: null,
+  detectedPitch: emptyPitch,
   score: initialScore,
   language: 'cs',
-  
-  setCurrentSong: (song) => set({ currentSong: song }),
+
+  setCurrentSong: (song) => set({ currentSong: song, currentTime: 0, isPlaying: false }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
   setCurrentTime: (time) => set({ currentTime: time }),
-  setTempo: (tempo) => set({ tempo }),
+  setTempoMultiplier: (tempoMultiplier) => set({ tempoMultiplier }),
   setVolume: (volume) => set({ volume }),
-  setLoopEnabled: (enabled) => set({ loopEnabled: enabled }),
-  setLoopRange: (start, end) => set({ loopStart: start, loopEnd: end }),
+  setLoopEnabled: (loopEnabled) => set({ loopEnabled }),
+  setLoopRange: (loopStart, loopEnd) => set({ loopStart, loopEnd }),
   setDifficulty: (difficulty) => set({ difficulty }),
-  setMicrophoneEnabled: (enabled) => set({ microphoneEnabled: enabled }),
-  setDetectedPitch: (pitch) => set({ detectedPitch: pitch }),
-  updateScore: (scoreUpdate) => set((state) => ({
-    score: { ...state.score, ...scoreUpdate }
-  })),
-  resetScore: () => set({ score: initialScore }),
-  setLanguage: (lang) => set({ language: lang }),
+  setMicrophoneEnabled: (microphoneEnabled) => set({ microphoneEnabled }),
+  setDetectedPitch: (detectedPitch) => set({ detectedPitch }),
+  updateScore: (scoreUpdate) => set((state) => ({ score: { ...state.score, ...scoreUpdate } })),
+  resetScore: (totalNotes = 0) =>
+    set({
+      score: {
+        ...initialScore,
+        totalNotes,
+      },
+    }),
+  setLanguage: (language) => set({ language }),
 }));

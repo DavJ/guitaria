@@ -1,117 +1,35 @@
-	
-# 🎸 Guitaria – Kompletní Roadmap
+# Guitaria Roadmap
 
-## 🎯 Účel aplikace
+## Phase 0 – Architecture repair
 
-**Guitaria** je interaktivní webová aplikace pro výuku **konkrétních skladeb na kytaru**, určená jak pro **začátečníky**, tak pro **pokročilé hráče**. Nabízí notaci, prstoklady, přehrávání, živou zpětnou vazbu a pokročilé tréninkové funkce.
+- [x] Canonical `Song` domain model shared across lesson mode and composer adapters
+- [x] Remove duplicate lesson architecture usage (legacy LessonView/LessonMode no longer active)
+- [x] Introduce lesson engine with deterministic note expectation/evaluation/score logic
+- [x] Add test infrastructure (Vitest) and CI checks
 
----
+## Phase 1 – Functional MVP
 
-## 🧠 Cílové skupiny
+- [x] Real MusicXML parsing (title/creator/measures/divisions/tempo/time/pitch/rest/duration)
+- [x] Duration + timeline conversion to seconds
+- [x] Render imported notation via OpenSheetMusicDisplay
+- [x] Synchronized lesson timeline with play/pause/stop/seek/tempo/loop
+- [x] Microphone pitch detection with confidence and cents error
+- [x] MIDI note comparison to expected lesson note
+- [x] Guitar fret/string mapping from expected MIDI note
+- [x] Pitch scoring + basic timing scoring + final summary state
+- [ ] Robust notation follow-cursor highlighting for all scores
+- [ ] Broader manual verification on multiple real-world MusicXML files
 
-### 🔹 Začátečníci a mírně pokročilí
-- Učí se základní akordy a rytmy
-- Hrají jednodušší verze skladeb
-- Potřebují vizuální nápovědu a zpomalené tempo
+## Phase 2 – Practice features
 
-### 🔸 Pokročilí a profesionálové
-- Hrají technicky náročné verze skladeb (sóla, barre, tapping)
-- Potřebují přesné vyhodnocení hraní a kontrolu rytmu
-- Chtějí výběr obtížnosti, vlastní tempo a pokročilé funkce
+- [ ] Adaptive fingering strategies by difficulty
+- [ ] Section-focused drill workflows and richer loop editing UX
+- [ ] Detailed per-note history and persistent session statistics
+- [ ] Practice history dashboard
 
----
+## Phase 3 – AI training
 
-## 🧩 Moduly aplikace
-
-### 1. `SongImport` 🎼
-- Import skladby z MusicXML
-- Extrakce not, tabulatury, struktury, akordů
-
-### 2. `LessonView` 🧑‍🏫
-- Hlavní obrazovka lekce
-- Zobrazuje notaci, hmatník, přehrávání, detekci, skóre
-
-### 3. `Fretboard` 🖐️
-- Vizualizace hmatníku
-- Zobrazení prstokladu a správných pozic v reálném čase
-
-### 4. `Player` ⏯️
-- Přehrávání skladby (smyčky, zpomalení, sekce)
-- Synchronizace s hmatníkem a analýzou
-
-### 5. `PitchDetection` 🎙️
-- Detekce tónu z mikrofonu
-- Porovnání s notací, určení správnosti tónu a rytmu
-
-### 6. `DifficultySelector` 🎚️
-- Přepínání mezi verzemi skladby (začátečník, originál, pokročilý)
-
-### 7. `Scoring` 📊
-- Vyhodnocení hry (tónová přesnost, rytmus, skóre)
-- Statistiky a tréninková doporučení
-
----
-
-## 🧠 Funkce podle úrovně
-
-### 👶 Funkce pro začátečníky
-- Vizualizace základních akordů (C, G, Am, Dm…)
-- Tréninkový režim s metronomem a smyčkou
-- Barevné zvýraznění prstů na hmatníku
-- Guided mode: krok po kroku refrén nebo sloka
-- Návrhy skladeb podle úrovně hráče
-
-### 🎸 Funkce pro pokročilé
-- Import originálních skladeb (vč. sólových partů)
-- Zobrazení prstokladu včetně barre, tapping, slides
-- Reálné přehrávání s možností detailního zastavení
-- Živá detekce výšky tónu (pitch) a rytmu přes mikrofon
-- Skórování podle přesnosti a načasování
-- Export výkonu nebo logu hraní
-- Volba části skladby (bridge, sólo, chorus)
-
----
-
-## 🌐 Technologie
-
-| Oblast | Stack |
-|--------|-------|
-| Frontend | React + Vite + TypeScript |
-| Stylování | TailwindCSS |
-| Routing | React Router |
-| Analýza zvuku | Web Audio API, Pitchy, Meyda |
-| Notace | OpenSheetMusicDisplay (MusicXML) |
-| Stav | Zustand / Redux |
-| Data | IndexedDB / localStorage / Cloud (v2) |
-
----
-
-## 🚧 Roadmap podle verzí
-
-### ✅ Fáze 1: MVP – základní přehrávač skladby
-- [ ] Import skladby (MusicXML)
-- [ ] Zobrazení notace + hmatníku
-- [ ] Mikrofonová detekce tónu
-- [ ] Přehrávání skladby (tempo, smyčka)
-- [ ] Jednoduché skórování (tón správně / špatně)
-
-### 🔜 Fáze 2: Interaktivní výuka
-- [ ] Přepínání obtížností
-- [ ] Trénink konkrétních částí písně (bridge, refrén, sólo)
-- [ ] Detailní skórování + analýza rytmu
-
-### 🎯 Fáze 3: Chytrý trénink a rozšíření
-- [ ] Doporučení na míru (na základě výkonu)
-- [ ] Offline režim (PWA / Electron)
-- [ ] Export výsledků, sdílení, historie tréninku
-
----
-
-## 💡 Kontext pro Copilot
-
-```ts
-// Guitaria je aplikace pro výuku konkrétních skladeb na kytaru.
-// Zaměřuje se na pokročilé hráče, ale má i režim pro začátečníky.
-// Pracuje s MusicXML, zobrazuje notaci + prstoklady, analyzuje hraní pomocí mikrofonu.
-// Tvým úkolem je postupně implementovat jednotlivé moduly podle ROADMAP.md.
-```
+- [ ] Server-backed provider integration for real LLM tutoring/composition
+- [ ] Personalized recommendations based on historical practice
+- [ ] Adaptive lesson generation from user weaknesses
+- [ ] Advanced AI-assisted feedback explanation
