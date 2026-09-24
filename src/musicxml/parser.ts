@@ -361,9 +361,8 @@ export function parseMusicXml(xmlText: string): Song {
   const sortedNotes = notes
     .sort((a, b) => a.startTime - b.startTime || a.measure - b.measure || a.sourceOrder - b.sourceOrder)
     .map((note) => {
-      const normalizedNote = { ...note };
-      delete normalizedNote.sourceOrder;
-      return normalizedNote;
+      const { sourceOrder, ...normalizedNote } = note;
+      return sourceOrder >= 0 ? normalizedNote : normalizedNote;
     });
 
   const sortedChords = chords
