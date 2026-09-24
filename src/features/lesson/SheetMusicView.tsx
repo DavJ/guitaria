@@ -111,18 +111,19 @@ const SheetMusicView: React.FC<SheetMusicViewProps> = ({ xml, targetNoteIndex })
     }
 
     let disposed = false;
+    const container = containerRef.current;
 
     const load = async () => {
       try {
         const osmdModule = await import('opensheetmusicdisplay');
         const { OpenSheetMusicDisplay } = osmdModule as unknown as { OpenSheetMusicDisplay: new (container: HTMLElement, options: Record<string, unknown>) => OsmdLike };
-        if (disposed || !containerRef.current) {
+        if (disposed) {
           return;
         }
 
-        containerRef.current.innerHTML = '';
+        container.innerHTML = '';
 
-        const instance = new OpenSheetMusicDisplay(containerRef.current, {
+        const instance = new OpenSheetMusicDisplay(container, {
           autoResize: true,
           backend: 'svg',
           drawPartNames: false,
@@ -151,9 +152,7 @@ const SheetMusicView: React.FC<SheetMusicViewProps> = ({ xml, targetNoteIndex })
       }
       osmdRef.current?.clear();
       osmdRef.current = null;
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
+      container.innerHTML = '';
     };
   }, [syncCursorToIndex, xml]);
 

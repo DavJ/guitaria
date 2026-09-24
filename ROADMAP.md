@@ -17,8 +17,9 @@
 - [x] MIDI note comparison to expected lesson note
 - [x] Guitar fret/string mapping from expected MIDI note
 - [x] Pitch scoring + basic timing scoring + final summary state
-- [ ] Robust notation follow-cursor highlighting for all scores
+- [x] Deterministic OSMD follow-cursor syncing for supported monophonic lesson scores
 - [ ] Broader manual verification on multiple real-world MusicXML files
+- [ ] Improve cursor/event parity for dense polyphony, repeats, and other advanced MusicXML navigation cases
 
 ## Phase 2 – Practice features
 

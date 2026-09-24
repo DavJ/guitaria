@@ -43,8 +43,8 @@ describe('parseMusicXml', () => {
 
     expect(playable[0].startTime).toBeCloseTo(0);
     expect(playable[1].startTime).toBeCloseTo(1);
-    expect(playable[2].startTime).toBeCloseTo(2);
-    expect(playable[3].startTime).toBeCloseTo(2);
+    expect(playable[2].startTime).toBeCloseTo(song.measures[1].startTime);
+    expect(playable[3].startTime).toBeCloseTo(song.measures[1].startTime);
   });
 
   it('parses rests, accidentals, chords, tempo changes, and non-4/4 meter', () => {

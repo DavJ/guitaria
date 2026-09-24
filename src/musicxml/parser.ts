@@ -176,7 +176,7 @@ export function parseMusicXml(xmlText: string): Song {
   });
 
   const parsed = parser.parse(xmlText);
-  const orderedParsed = orderedParser.parse(xmlText).map((node) => asRecord(node));
+  const orderedParsed = (orderedParser.parse(xmlText) as unknown[]).map((node) => asRecord(node));
   const score = asRecord(parsed['score-partwise']);
   if (Object.keys(score).length === 0) {
     throw new Error('Unsupported MusicXML format: expected score-partwise root.');
@@ -360,7 +360,11 @@ export function parseMusicXml(xmlText: string): Song {
 
   const sortedNotes = notes
     .sort((a, b) => a.startTime - b.startTime || a.measure - b.measure || a.sourceOrder - b.sourceOrder)
-    .map(({ sourceOrder: _sourceOrder, ...note }) => note);
+    .map((note) => {
+      const normalizedNote = { ...note };
+      delete normalizedNote.sourceOrder;
+      return normalizedNote;
+    });
 
   const sortedChords = chords
     .sort((a, b) => a.startTime - b.startTime)
