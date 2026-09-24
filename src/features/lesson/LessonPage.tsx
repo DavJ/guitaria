@@ -48,6 +48,7 @@ const LessonPage: React.FC = () => {
   const lastFrameRef = useRef<number | null>(null);
   const lastHandledDetectionRef = useRef<number | null>(null);
   const currentTimeRef = useRef(0);
+  const rafIdRef = useRef<number | null>(null);
 
   const notes = useMemo(() => (currentSong ? getPlayableNotes(currentSong) : []), [currentSong]);
 
@@ -126,14 +127,17 @@ const LessonPage: React.FC = () => {
         return updated;
       });
 
-      if (isPlaying) {
-        requestAnimationFrame(tick);
+      if (nextTime < songDuration) {
+        rafIdRef.current = requestAnimationFrame(tick);
       }
     };
 
-    const frame = requestAnimationFrame(tick);
+    rafIdRef.current = requestAnimationFrame(tick);
     return () => {
-      cancelAnimationFrame(frame);
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+      rafIdRef.current = null;
       lastFrameRef.current = null;
     };
   }, [

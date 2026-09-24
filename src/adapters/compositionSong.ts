@@ -19,13 +19,14 @@ export function compositionToSong(composition: Composition): Song {
   const notes: SongNote[] = composition.sections
     .flatMap((section, sectionIndex) =>
       section.melody.map((note, noteIndex) => {
-        const midi = pitchToMidi(note.pitch, 0, note.octave);
+        const alter = note.pitch.includes('#') ? 1 : 0;
+        const midi = pitchToMidi(note.pitch.replace('#', ''), alter, note.octave);
         return {
           id: `cmp-note-${sectionIndex}-${noteIndex}`,
           midi,
           pitch: note.pitch,
           step: note.pitch.replace('#', ''),
-          alter: note.pitch.includes('#') ? 1 : 0,
+          alter,
           octave: note.octave,
           startTime: note.time * secondsPerBeat,
           duration: note.duration * secondsPerBeat,

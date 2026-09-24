@@ -8,6 +8,15 @@ interface ParseState {
   key?: string;
 }
 
+function sanitizeText(value: string | null | undefined): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  // eslint-disable-next-line no-control-regex
+  return value.replace(/[<>&]/g, '').replace(/[\u0000-\u001F\u007F]/g, '').trim();
+}
+
 function parseInteger(value: string | null | undefined, fallback: number): number {
   const parsed = value ? Number.parseInt(value, 10) : Number.NaN;
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -52,7 +61,7 @@ function parseChordName(harmonyElement: Element): string {
 }
 
 function parseSectionFromDirection(direction: Element, startTime: number, measureNumber: number): SongSection | null {
-  const rehearsal = direction.querySelector('direction-type > rehearsal')?.textContent?.trim();
+  const rehearsal = sanitizeText(direction.querySelector('direction-type > rehearsal')?.textContent);
   if (!rehearsal) {
     return null;
   }
@@ -88,13 +97,13 @@ export function parseMusicXml(xmlText: string): Song {
   }
 
   const title =
-    xmlDoc.querySelector('work > work-title')?.textContent?.trim() ??
-    xmlDoc.querySelector('movement-title')?.textContent?.trim() ??
+    sanitizeText(xmlDoc.querySelector('work > work-title')?.textContent) ??
+    sanitizeText(xmlDoc.querySelector('movement-title')?.textContent) ??
     'Untitled';
 
   const artist =
-    xmlDoc.querySelector('identification > creator[type="composer"]')?.textContent?.trim() ??
-    xmlDoc.querySelector('identification > creator')?.textContent?.trim() ??
+    sanitizeText(xmlDoc.querySelector('identification > creator[type="composer"]')?.textContent) ??
+    sanitizeText(xmlDoc.querySelector('identification > creator')?.textContent) ??
     undefined;
 
   const part = xmlDoc.querySelector('part');
@@ -216,7 +225,7 @@ export function parseMusicXml(xmlText: string): Song {
         isRest,
       });
 
-      const lyricText = child.querySelector('lyric > text')?.textContent?.trim();
+      const lyricText = sanitizeText(child.querySelector('lyric > text')?.textContent);
       if (lyricText) {
         lyrics.push({
           id: `lyric-${measureNumber}-${startDiv}-${lyrics.length}`,
