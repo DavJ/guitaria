@@ -4,6 +4,15 @@ export interface GuitarPosition {
 }
 
 export const STANDARD_TUNING_MIDI = [40, 45, 50, 55, 59, 64];
+export const GUITAR_STRING_NAMES = ['E', 'A', 'D', 'G', 'B', 'E'];
+
+export function internalStringIndexToGuitarStringNumber(index: number): number {
+  return STANDARD_TUNING_MIDI.length - index;
+}
+
+export function getGuitarStringLabel(index: number): string {
+  return `${internalStringIndexToGuitarStringNumber(index)} · ${GUITAR_STRING_NAMES[index]}`;
+}
 
 export function getGuitarPositions(midi: number, minFret = 0, maxFret = 20): GuitarPosition[] {
   const positions: GuitarPosition[] = [];
