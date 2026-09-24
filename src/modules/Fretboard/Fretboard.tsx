@@ -1,4 +1,5 @@
 import React from 'react';
+import { getGuitarStringLabel } from '../../guitar/fretboard';
 
 interface FretboardProps {
   currentNote?: {
@@ -9,7 +10,6 @@ interface FretboardProps {
 
 const STRINGS = 6;
 const FRETS = 15;
-const STRING_NOTES = ['E', 'A', 'D', 'G', 'B', 'E']; // Standard tuning
 
 const Fretboard: React.FC<FretboardProps> = ({ 
   currentNote,
@@ -18,49 +18,52 @@ const Fretboard: React.FC<FretboardProps> = ({
     <div className="w-full bg-gradient-to-b from-amber-800 to-amber-900 p-6 rounded-lg shadow-xl">
       <div className="relative">
         {/* String lines */}
-        {[...Array(STRINGS)].map((_, stringIndex) => (
+        {[...Array(STRINGS)].map((_, visualStringIndex) => {
+          const internalStringIndex = STRINGS - 1 - visualStringIndex;
+
+          return (
           <div
-            key={`string-${stringIndex}`}
+            key={`string-${internalStringIndex}`}
             className="relative h-8 border-b-2 border-gray-300 flex items-center"
             style={{
-              borderBottomWidth: `${1 + stringIndex * 0.3}px`,
+              borderBottomWidth: `${1 + internalStringIndex * 0.3}px`,
             }}
           >
             {/* String label */}
             <div className="absolute -left-8 text-white font-bold text-sm">
-              {STRING_NOTES[stringIndex]}
+              {getGuitarStringLabel(internalStringIndex)}
             </div>
             
             {/* Frets */}
             {[...Array(FRETS)].map((_, fretIndex) => (
               <div
-                key={`fret-${stringIndex}-${fretIndex}`}
+                key={`fret-${internalStringIndex}-${fretIndex}`}
                 className="relative flex-1 h-full"
                 style={{
                   borderRight: fretIndex === 0 ? '4px solid #333' : '2px solid #666',
                 }}
               >
                 {/* Fret markers */}
-                {stringIndex === 2 && [3, 5, 7, 9].includes(fretIndex) && (
+                {visualStringIndex === 2 && [3, 5, 7, 9].includes(fretIndex) && (
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full" />
                 )}
-                {stringIndex === 2 && fretIndex === 12 && (
+                {visualStringIndex === 2 && fretIndex === 12 && (
                   <>
-                    <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full" />
-                    <div className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full" />
+                   <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full" />
+                   <div className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full" />
                   </>
                 )}
                 
                 {/* Highlight current note */}
                 {currentNote &&
-                  currentNote.string === stringIndex &&
+                  currentNote.string === internalStringIndex &&
                   currentNote.fret === fretIndex && (
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-blue-500 rounded-full border-2 border-white animate-pulse" />
                   )}
               </div>
             ))}
           </div>
-        ))}
+        )})}
         
         {/* Fret numbers */}
         <div className="flex mt-2">

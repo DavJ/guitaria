@@ -5,7 +5,7 @@ import Fretboard from '../../modules/Fretboard';
 import DifficultySelector from '../../modules/DifficultySelector';
 import { useAppStore } from '../../store/appStore';
 import { getPlayableNotes } from '../../domain/Song';
-import { chooseBestPosition, getGuitarPositions, type GuitarPosition } from '../../guitar/fretboard';
+import { chooseBestPosition, getGuitarPositions, internalStringIndexToGuitarStringNumber, type GuitarPosition } from '../../guitar/fretboard';
 import { usePitchDetector } from '../../audio/usePitchDetector';
 import {
   applyEvaluation,
@@ -15,8 +15,11 @@ import {
   evaluateDetectedNote,
   getExpectedNote,
   markMissedNotes,
+  rebuildLessonProgress,
+  resetProgressInRange,
   type LessonProgress,
 } from './lessonEngine';
+import { formatNoteLabel } from './noteFormatting';
 import SheetMusicView from './SheetMusicView';
 
 const LessonPage: React.FC = () => {
@@ -44,6 +47,7 @@ const LessonPage: React.FC = () => {
   } = useAppStore();
 
   const [progress, setProgress] = useState<LessonProgress | null>(null);
+  const [lessonError, setLessonError] = useState<string | null>(null);
   const previousPositionRef = useRef<GuitarPosition | undefined>(undefined);
   const lastFrameRef = useRef<number | null>(null);
   const lastHandledDetectionRef = useRef<number | null>(null);
@@ -51,21 +55,43 @@ const LessonPage: React.FC = () => {
   const rafIdRef = useRef<number | null>(null);
 
   const notes = useMemo(() => (currentSong ? getPlayableNotes(currentSong) : []), [currentSong]);
+  const playableNoteIndexById = useMemo(
+    () =>
+      notes.reduce<Record<string, number>>((acc, note, index) => {
+        acc[note.id] = index;
+        return acc;
+      }, {}),
+    [notes],
+  );
+
+  useEffect(() => {
+    return () => {
+      setIsPlaying(false);
+      setMicrophoneEnabled(false);
+    };
+  }, [setIsPlaying, setMicrophoneEnabled]);
 
   useEffect(() => {
     if (!currentSong) {
       setProgress(null);
+      setLessonError(null);
+      setMicrophoneEnabled(false);
       return;
     }
 
-    setProgress(createLessonProgress(currentSong));
+    const fresh = createLessonProgress(currentSong);
+    setProgress(fresh);
     resetScore(getPlayableNotes(currentSong).length);
+    updateScore(calculateScore(currentSong, fresh));
     setCurrentTime(0);
     currentTimeRef.current = 0;
     setLoopRange(0, currentSong.duration);
     setIsPlaying(false);
+    setMicrophoneEnabled(false);
+    setLessonError(null);
     previousPositionRef.current = undefined;
-  }, [currentSong, resetScore, setCurrentTime, setIsPlaying, setLoopRange]);
+    lastHandledDetectionRef.current = null;
+  }, [currentSong, resetScore, setCurrentTime, setIsPlaying, setLoopRange, setMicrophoneEnabled, updateScore]);
 
   useEffect(() => {
     currentTimeRef.current = currentTime;
@@ -87,11 +113,22 @@ const LessonPage: React.FC = () => {
     return chooseBestPosition(positions, previousPositionRef.current);
   }, [expectedNote]);
 
+  const targetNoteIndex = expectedNote ? playableNoteIndexById[expectedNote.id] ?? null : null;
   const { snapshot, error: pitchError } = usePitchDetector(microphoneEnabled, expectedNote?.midi);
 
   useEffect(() => {
     setDetectedPitch(snapshot);
   }, [setDetectedPitch, snapshot]);
+
+  useEffect(() => {
+    if (!pitchError) {
+      return;
+    }
+
+    setLessonError(pitchError);
+    setIsPlaying(false);
+    setMicrophoneEnabled(false);
+  }, [pitchError, setIsPlaying, setMicrophoneEnabled]);
 
   useEffect(() => {
     if (!currentSong || !isPlaying) {
@@ -105,9 +142,21 @@ const LessonPage: React.FC = () => {
 
       const songDuration = currentSong.duration;
       let nextTime = currentTimeRef.current + delta;
+      let nextProgress: LessonProgress | null = null;
 
       if (loopEnabled && loopEnd > loopStart && nextTime >= loopEnd) {
         nextTime = loopStart;
+        setProgress((prev) => {
+          if (!prev) {
+            return prev;
+          }
+
+          const reset = resetProgressInRange(currentSong, prev, loopStart, loopEnd);
+          nextProgress = reset;
+          updateScore(calculateScore(currentSong, reset));
+          return reset;
+        });
+        previousPositionRef.current = undefined;
       }
 
       if (nextTime >= songDuration) {
@@ -117,12 +166,14 @@ const LessonPage: React.FC = () => {
 
       currentTimeRef.current = nextTime;
       setCurrentTime(nextTime);
+
       setProgress((prev) => {
-        if (!prev) {
-          return prev;
+        const baseProgress = nextProgress ?? prev;
+        if (!baseProgress) {
+          return baseProgress;
         }
 
-        const updated = markMissedNotes(currentSong, prev, nextTime, DEFAULT_LESSON_CONFIG);
+        const updated = markMissedNotes(currentSong, baseProgress, nextTime, DEFAULT_LESSON_CONFIG);
         updateScore(calculateScore(currentSong, updated));
         return updated;
       });
@@ -182,10 +233,68 @@ const LessonPage: React.FC = () => {
     });
   }, [currentSong, currentTime, expectedNote, expectedPosition, progress, snapshot, updateScore]);
 
+  const handleSeek = async (newTime: number) => {
+    if (!currentSong) {
+      return;
+    }
+
+    const clampedTime = Math.min(Math.max(newTime, 0), currentSong.duration);
+    setIsPlaying(false);
+    setCurrentTime(clampedTime);
+    currentTimeRef.current = clampedTime;
+    previousPositionRef.current = undefined;
+    lastHandledDetectionRef.current = null;
+    const rebuilt = rebuildLessonProgress(currentSong, clampedTime);
+    setProgress(rebuilt);
+    updateScore(calculateScore(currentSong, rebuilt));
+  };
+
+  const enableMicrophone = async (): Promise<boolean> => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+      setMicrophoneEnabled(true);
+      setLessonError(null);
+      return true;
+    } catch {
+      setMicrophoneEnabled(false);
+      setLessonError(t('aiComposer.input.microphoneError'));
+      return false;
+    }
+  };
+
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      return;
+    }
+
+    if (!microphoneEnabled) {
+      const microphoneReady = await enableMicrophone();
+      if (!microphoneReady) {
+        return;
+      }
+    }
+
+    setLessonError(null);
+    setIsPlaying(true);
+  };
+
+  const handleMicrophoneToggle = async () => {
+    if (microphoneEnabled) {
+      setMicrophoneEnabled(false);
+      return;
+    }
+
+    await enableMicrophone();
+  };
+
   const handleStop = () => {
     setIsPlaying(false);
     setCurrentTime(0);
     currentTimeRef.current = 0;
+    previousPositionRef.current = undefined;
+    lastHandledDetectionRef.current = null;
     if (currentSong) {
       const fresh = createLessonProgress(currentSong);
       setProgress(fresh);
@@ -216,20 +325,20 @@ const LessonPage: React.FC = () => {
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2 space-y-6">
             <div className="bg-gray-800 p-4 rounded-xl">
-              <SheetMusicView xml={currentSong.sourceXml ?? ''} currentTime={currentTime} />
+              <SheetMusicView xml={currentSong.sourceXml ?? ''} targetNoteIndex={targetNoteIndex} />
             </div>
 
             <Fretboard currentNote={expectedPosition} />
 
             <div className="bg-gray-800 p-6 rounded-xl space-y-4">
               <div className="flex flex-wrap gap-3 items-center">
-                <button className="px-4 py-2 bg-blue-600 rounded" onClick={() => setIsPlaying(!isPlaying)}>
+                <button className="px-4 py-2 bg-blue-600 rounded" onClick={() => void handlePlayPause()}>
                   {isPlaying ? t('lesson.pause') : t('lesson.play')}
                 </button>
                 <button className="px-4 py-2 bg-red-600 rounded" onClick={handleStop}>
                   {t('lesson.stop')}
                 </button>
-                <button className={`px-4 py-2 rounded ${microphoneEnabled ? 'bg-green-600' : 'bg-gray-600'}`} onClick={() => setMicrophoneEnabled(!microphoneEnabled)}>
+                <button className={`px-4 py-2 rounded ${microphoneEnabled ? 'bg-green-600' : 'bg-gray-600'}`} onClick={() => void handleMicrophoneToggle()}>
                   {microphoneEnabled ? t('pitchDetection.detecting') : t('pitchDetection.enableMicrophone')}
                 </button>
               </div>
@@ -241,7 +350,7 @@ const LessonPage: React.FC = () => {
                   max={currentSong.duration}
                   step={0.01}
                   value={currentTime}
-                  onChange={(event) => setCurrentTime(Number(event.target.value))}
+                  onChange={(event) => void handleSeek(Number(event.target.value))}
                   className="w-full"
                 />
                 <div className="flex justify-between text-sm text-gray-400">
@@ -297,16 +406,18 @@ const LessonPage: React.FC = () => {
 
             <div className="bg-gray-800 p-4 rounded-xl space-y-2">
               <h3 className="font-bold text-amber-400">Expected note</h3>
-              <p>{expectedNote ? `${expectedNote.pitch}${expectedNote.octave}` : '—'}</p>
+              <p>{expectedNote ? formatNoteLabel(expectedNote) : '—'}</p>
               <p>
-                {expectedPosition ? `String ${expectedPosition.string + 1}, Fret ${expectedPosition.fret}` : 'No playable position'}
+                {expectedPosition
+                  ? `String ${internalStringIndexToGuitarStringNumber(expectedPosition.string)}, Fret ${expectedPosition.fret}`
+                  : 'No playable position'}
               </p>
               <p className="text-sm text-gray-300">Detected: {detectedPitch.note ?? '—'}</p>
               <p className="text-sm text-gray-300">Clarity: {(detectedPitch.clarity * 100).toFixed(0)}%</p>
               <p className="text-sm text-gray-300">
                 Cents error: {detectedPitch.centsError == null ? '—' : detectedPitch.centsError.toFixed(1)}
               </p>
-              {pitchError && <p className="text-red-400 text-sm">{pitchError}</p>}
+              {(lessonError || pitchError) && <p className="text-red-400 text-sm">{lessonError ?? pitchError}</p>}
             </div>
 
             <div className="bg-gray-800 p-4 rounded-xl space-y-2">
