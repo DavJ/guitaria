@@ -143,7 +143,7 @@ const ChatBot: React.FC = () => {
               {message.sender === 'bot' && (
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-lg">🎵</span>
-                  <span className="text-xs text-amber-300 font-semibold">AI Tutor</span>
+                  <span className="text-xs text-amber-300 font-semibold">Tutor Bot</span>
                 </div>
               )}
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>

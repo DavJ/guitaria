@@ -1,53 +1,49 @@
-/**
- * Conversion utilities between Composition and Song types
- */
-
 import type { Composition } from '../features/AIComposer/types';
-import type { Song } from '../types/Song';
+import type { Song } from '../domain/Song';
+import { compositionToSong as adaptCompositionToSong } from '../adapters/compositionSong';
 
-/**
- * Convert a Composition to a Song for lesson mode
- */
 export function compositionToSong(composition: Composition): Song {
-  return {
-    id: composition.id,
-    title: composition.title,
-    tempo: composition.tempo,
-    key: composition.key,
-    sections: composition.sections.map(section => ({
-      name: section.name,
-      chords: section.chords.map(chord => chord.name),
-      lyrics: section.lyrics
-    }))
-  };
+  return adaptCompositionToSong(composition);
 }
 
-/**
- * Convert a Song to a simplified Composition
- */
 export function songToComposition(song: Song): Partial<Composition> {
+  const beats = song.timeSignature?.beats ?? 4;
+  const beatType = song.timeSignature?.beatType ?? 4;
+  const secondsPerBeat = 60 / song.tempo;
+
   return {
     title: song.title,
     tempo: song.tempo,
-    key: song.key,
-    sections: song.sections.map((section, index) => {
-      const startTime = index * 16; // Approximate 16 beats per section
-      return {
-        id: `section-${index}`,
-        type: 'verse' as const,
-        name: section.name,
-        startTime,
-        endTime: startTime + 16,
-        chords: section.chords.map((chordName, chordIndex) => ({
-          name: chordName,
-          root: chordName.charAt(0),
-          quality: chordName.includes('m') ? 'm' : '',
-          duration: 2,
-          time: startTime + chordIndex * 2
+    key: song.key ?? 'C',
+    timeSignature: `${beats}/${beatType}`,
+    sections: song.sections.map((section) => ({
+      id: section.id,
+      type: 'verse',
+      name: section.name,
+      startTime: section.startTime / secondsPerBeat,
+      endTime: section.endTime / secondsPerBeat,
+      chords: song.chords
+        .filter((chord) => chord.startTime >= section.startTime && chord.startTime < section.endTime)
+        .map((chord) => ({
+          name: chord.name,
+          root: chord.name.charAt(0),
+          quality: chord.name.includes('m') ? 'm' : '',
+          duration: chord.duration / secondsPerBeat,
+          time: chord.startTime / secondsPerBeat,
         })),
-        melody: [],
-        lyrics: section.lyrics
-      };
-    })
+      melody: song.notes
+        .filter((note) => !note.isRest && note.startTime >= section.startTime && note.startTime < section.endTime)
+        .map((note) => ({
+          pitch: note.pitch,
+          octave: note.octave,
+          duration: note.duration / secondsPerBeat,
+          time: note.startTime / secondsPerBeat,
+          velocity: 0.8,
+        })),
+      lyrics: song.lyrics
+        .filter((lyric) => lyric.startTime >= section.startTime && lyric.startTime < section.endTime)
+        .map((lyric) => lyric.text)
+        .join('\n'),
+    })),
   };
 }
