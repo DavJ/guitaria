@@ -68,7 +68,8 @@
     "uploadMusicXML": "MusicXML अपलोड करें",
     "parsing": "प्रोसेस हो रहा है...",
     "success": "गाना सफलतापूर्वक आयात किया गया",
-    "error": "आयात त्रुटि"
+    "error": "आयात त्रुटि",
+    "loadDemo": "Load Demo Lesson"
   },
   "settings": {
     "title": "सेटिंग्स",

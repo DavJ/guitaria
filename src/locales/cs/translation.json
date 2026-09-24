@@ -73,7 +73,8 @@
     "uploadMusicXML": "Nahrát MusicXML",
     "parsing": "Zpracovává se...",
     "success": "Skladba úspěšně importována",
-    "error": "Chyba při importu"
+    "error": "Chyba při importu",
+    "loadDemo": "Load Demo Lesson"
   },
   "settings": {
     "title": "Nastavení",

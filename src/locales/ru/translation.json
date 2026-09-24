@@ -68,7 +68,8 @@
     "uploadMusicXML": "Загрузить MusicXML",
     "parsing": "Обработка...",
     "success": "Песня успешно импортирована",
-    "error": "Ошибка импорта"
+    "error": "Ошибка импорта",
+    "loadDemo": "Load Demo Lesson"
   },
   "settings": {
     "title": "Настройки",

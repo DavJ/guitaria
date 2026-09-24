@@ -68,7 +68,8 @@
     "uploadMusicXML": "تحميل MusicXML",
     "parsing": "جاري المعالجة...",
     "success": "تم استيراد الأغنية بنجاح",
-    "error": "خطأ في الاستيراد"
+    "error": "خطأ في الاستيراد",
+    "loadDemo": "Load Demo Lesson"
   },
   "settings": {
     "title": "الإعدادات",

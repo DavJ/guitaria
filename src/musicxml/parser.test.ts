@@ -26,5 +26,7 @@ describe('parseMusicXml', () => {
 
   it('throws on invalid xml', () => {
     expect(() => parseMusicXml('<score-partwise><broken></score-partwise>')).toThrow();
+    expect(() => parseMusicXml('not xml at all')).toThrow();
+    expect(() => parseMusicXml('<other-root/>')).toThrow();
   });
 });

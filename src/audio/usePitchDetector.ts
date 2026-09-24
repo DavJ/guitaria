@@ -5,6 +5,13 @@ import type { PitchSnapshot } from '../store/appStore';
 
 const CLARITY_THRESHOLD = 0.85;
 
+// Standard guitar: low E2 (82 Hz) to high E6 (1319 Hz) with some headroom.
+const GUITAR_MIN_FREQ = 70;
+const GUITAR_MAX_FREQ = 1400;
+
+// Exponential moving average weight for frequency smoothing (0 = no smoothing, 1 = frozen).
+const FREQ_SMOOTH_ALPHA = 0.3;
+
 const EMPTY_SNAPSHOT: PitchSnapshot = {
   frequency: null,
   midi: null,
@@ -24,6 +31,7 @@ export function usePitchDetector(enabled: boolean, targetMidi?: number | null) {
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number | null>(null);
   const bufferRef = useRef<Float32Array | null>(null);
+  const smoothedFreqRef = useRef<number | null>(null);
 
   const cleanup = useCallback(async () => {
     if (rafRef.current !== null) {
@@ -43,6 +51,7 @@ export function usePitchDetector(enabled: boolean, targetMidi?: number | null) {
 
     analyserRef.current = null;
     detectorRef.current = null;
+    smoothedFreqRef.current = null;
     setSnapshot(EMPTY_SNAPSHOT);
   }, []);
 
@@ -62,13 +71,17 @@ export function usePitchDetector(enabled: boolean, targetMidi?: number | null) {
     analyser.getFloatTimeDomainData(buffer as unknown as Float32Array<ArrayBuffer>);
     const [frequency, clarity] = detector.findPitch(buffer, context.sampleRate);
 
-    if (clarity > CLARITY_THRESHOLD && frequency > 0) {
-      const midi = frequencyToMidi(frequency);
+    if (clarity > CLARITY_THRESHOLD && frequency > 0 && frequency >= GUITAR_MIN_FREQ && frequency <= GUITAR_MAX_FREQ) {
+      const prev = smoothedFreqRef.current;
+      const smoothed = prev === null ? frequency : prev + FREQ_SMOOTH_ALPHA * (frequency - prev);
+      smoothedFreqRef.current = smoothed;
+
+      const midi = frequencyToMidi(smoothed);
       const noteLabel = midi !== null ? midiToNoteName(midi).label : null;
-      const centsError = midi !== null && targetMidi != null ? frequencyToCentsError(frequency, targetMidi) : null;
+      const centsError = midi !== null && targetMidi != null ? frequencyToCentsError(smoothed, targetMidi) : null;
 
       setSnapshot({
-        frequency,
+        frequency: smoothed,
         midi,
         note: noteLabel,
         centsError,
@@ -76,6 +89,7 @@ export function usePitchDetector(enabled: boolean, targetMidi?: number | null) {
         timestamp: performance.now(),
       });
     } else {
+      smoothedFreqRef.current = null;
       setSnapshot((prev) => ({ ...prev, clarity, frequency: null, midi: null, note: null, centsError: null }));
     }
 
