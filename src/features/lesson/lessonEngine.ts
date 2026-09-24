@@ -139,10 +139,10 @@ export function calculateScore(song: Song, progress: LessonProgress): ScoreData 
     return acc;
   }, {});
   const perNoteEvaluations = Object.values(latestEvaluationByNote);
-  const pitchErrors = progress.evaluations
+  const pitchErrors = perNoteEvaluations
     .map((evaluation) => evaluation.pitchErrorCents)
     .filter((value): value is number => typeof value === 'number');
-  const timingErrors = progress.evaluations
+  const timingErrors = perNoteEvaluations
     .map((evaluation) => evaluation.timingErrorMs)
     .filter((value): value is number => typeof value === 'number');
 

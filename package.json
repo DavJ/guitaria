@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
+    "fast-xml-parser": "^5.11.1",
     "i18next": "^25.6.0",
     "opensheetmusicdisplay": "^1.9.2",
     "pitchy": "^4.1.0",

@@ -2,7 +2,7 @@
  * AIComposerPage - Main page for AI Composer feature
  */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import InputPanel from '../features/AIComposer/InputPanel';
@@ -26,7 +26,7 @@ const AIComposerPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setCurrentSong } = useAppStore();
-  const composerProvider = new LocalComposerProvider();
+  const composerProvider = useMemo(() => new LocalComposerProvider(), []);
   const [composition, setComposition] = useState<Composition>(createEmptyComposition());
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState<'input' | 'edit' | 'preview'>('input');

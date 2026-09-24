@@ -27,7 +27,7 @@ const Player: React.FC = () => {
           <button onClick={() => setIsPlaying(!isPlaying)} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">
             {isPlaying ? t('lesson.pause') : t('lesson.play')}
           </button>
-          <button onClick={() => setCurrentTime(0)} className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold">
+          <button onClick={() => { setIsPlaying(false); setCurrentTime(0); }} className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold">
             {t('lesson.stop')}
           </button>
         </div>
