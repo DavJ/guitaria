@@ -7,7 +7,7 @@ interface SheetMusicViewProps {
 
 const SheetMusicView: React.FC<SheetMusicViewProps> = ({ xml, currentTime }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const osmdRef = useRef<{ load: (xmlData: string) => Promise<void>; render: () => void } | null>(null);
+  const osmdRef = useRef<{ load: (xmlData: string) => Promise<unknown>; render: () => void } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

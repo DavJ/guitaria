@@ -36,7 +36,7 @@ export function compositionToSong(composition: Composition): Song {
     )
     .sort((a, b) => a.startTime - b.startTime);
 
-  const sections: SongSection[] = composition.sections.map((section, index) => ({
+  const sections: SongSection[] = composition.sections.map((section) => ({
     id: section.id,
     name: section.name,
     startTime: section.startTime * secondsPerBeat,

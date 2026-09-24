@@ -16,7 +16,7 @@ export function songToComposition(song: Song): Partial<Composition> {
     tempo: song.tempo,
     key: song.key ?? 'C',
     timeSignature: `${beats}/${beatType}`,
-    sections: song.sections.map((section, index) => ({
+    sections: song.sections.map((section) => ({
       id: section.id,
       type: 'verse',
       name: section.name,

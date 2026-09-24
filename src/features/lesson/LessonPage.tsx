@@ -93,7 +93,7 @@ const LessonPage: React.FC = () => {
   }, [setDetectedPitch, snapshot]);
 
   useEffect(() => {
-    if (!currentSong || !progress || !isPlaying) {
+    if (!currentSong || !isPlaying) {
       return;
     }
 

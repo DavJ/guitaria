@@ -1,6 +1,6 @@
 import type { LyricGenerationOptions, MelodyGenerationOptions, MelodyNote, SectionType } from './types';
 
-export interface MelodyRequest extends MelodyGenerationOptions {}
+export type MelodyRequest = MelodyGenerationOptions;
 
 export interface LyricRequest {
   sectionType: SectionType;
