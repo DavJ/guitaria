@@ -17,6 +17,7 @@
   "lesson": {
     "title": "Lesson",
     "play": "Play",
+    "cancelStart": "Cancel start",
     "pause": "Pause",
     "stop": "Stop",
     "tempo": "Tempo",

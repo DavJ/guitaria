@@ -17,6 +17,7 @@
   "lesson": {
     "title": "Lekce",
     "play": "Přehrát",
+    "cancelStart": "Zrušit spuštění",
     "pause": "Pozastavit",
     "stop": "Zastavit",
     "tempo": "Tempo",

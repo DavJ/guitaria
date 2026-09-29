@@ -34,6 +34,43 @@ export interface LessonProgress {
   evaluations: NoteEvaluation[];
 }
 
+function absoluteOrInfinity(value?: number): number {
+  return typeof value === 'number' ? Math.abs(value) : Number.POSITIVE_INFINITY;
+}
+
+function shouldReplaceEvaluation(current: NoteEvaluation, next: NoteEvaluation): boolean {
+  if (next.correct) {
+    return true;
+  }
+
+  if (current.correct) {
+    return false;
+  }
+
+  const currentPitchError = absoluteOrInfinity(current.pitchErrorCents);
+  const nextPitchError = absoluteOrInfinity(next.pitchErrorCents);
+  if (nextPitchError !== currentPitchError) {
+    return nextPitchError < currentPitchError;
+  }
+
+  const currentTimingError = absoluteOrInfinity(current.timingErrorMs);
+  const nextTimingError = absoluteOrInfinity(next.timingErrorMs);
+  return nextTimingError <= currentTimingError;
+}
+
+function upsertEvaluation(evaluations: NoteEvaluation[], evaluation: NoteEvaluation): NoteEvaluation[] {
+  const existingIndex = evaluations.findIndex((item) => item.noteId === evaluation.noteId);
+  if (existingIndex < 0) {
+    return [...evaluations, evaluation];
+  }
+
+  if (!shouldReplaceEvaluation(evaluations[existingIndex], evaluation)) {
+    return evaluations;
+  }
+
+  return evaluations.map((item, index) => (index === existingIndex ? evaluation : item));
+}
+
 export function createLessonProgress(song: Song): LessonProgress {
   const statuses: Record<string, NoteStatus> = {};
   getPlayableNotes(song).forEach((note) => {
@@ -100,7 +137,7 @@ export function applyEvaluation(progress: LessonProgress, evaluation: NoteEvalua
       ...progress.noteStatuses,
       [evaluation.noteId]: evaluation.correct ? 'accepted' : currentStatus,
     },
-    evaluations: [...progress.evaluations, evaluation],
+    evaluations: upsertEvaluation(progress.evaluations, evaluation),
   };
 }
 
@@ -127,6 +164,36 @@ export function markMissedNotes(song: Song, progress: LessonProgress, currentTim
   return {
     ...progress,
     noteStatuses: nextStatuses,
+  };
+}
+
+export function rebuildLessonProgress(song: Song, currentTime: number, config: LessonConfig = DEFAULT_LESSON_CONFIG): LessonProgress {
+  return markMissedNotes(song, createLessonProgress(song), currentTime, config);
+}
+
+export function resetProgressInRange(song: Song, progress: LessonProgress, rangeStart: number, rangeEnd: number): LessonProgress {
+  if (rangeEnd <= rangeStart) {
+    return progress;
+  }
+
+  const noteStatuses = { ...progress.noteStatuses };
+  const resetNoteIds = new Set(
+    getPlayableNotes(song)
+      .filter((note) => note.startTime >= rangeStart && note.startTime < rangeEnd)
+      .map((note) => note.id),
+  );
+
+  if (resetNoteIds.size === 0) {
+    return progress;
+  }
+
+  resetNoteIds.forEach((noteId) => {
+    noteStatuses[noteId] = 'waiting';
+  });
+
+  return {
+    noteStatuses,
+    evaluations: progress.evaluations.filter((evaluation) => !resetNoteIds.has(evaluation.noteId)),
   };
 }
 
