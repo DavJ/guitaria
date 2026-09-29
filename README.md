@@ -97,5 +97,7 @@ Not guaranteed yet:
 
 - The tutor/composer logic is local/template-based in this phase; no browser-side API keys are used.
 - Cursor synchronization is deterministic for the demo lesson and the supported monophonic MusicXML subset. Scores with dense polyphony can still render correctly while the lesson cursor falls back to best-effort note-event matching.
-- Stopping a lesson resets lesson progress to the start; changing songs also shuts down microphone capture so audio resources are released cleanly.
+- Play waits for microphone capture and the pitch detector to be ready. A pending start can be cancelled; granting permission later does not restart a cancelled lesson.
+- Pause and seeking suspend scoring. Resuming and loop wraps accept only newly captured pitch measurements.
+- Stopping a lesson resets progress to the start and shuts down microphone capture; changing songs and leaving the lesson also release audio resources.
 - Some advanced capabilities (complex polyphony handling, persistence analytics) remain in progress.

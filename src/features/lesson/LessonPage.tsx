@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SongImport from '../../modules/SongImport';
 import Fretboard from '../../modules/Fretboard';
 import DifficultySelector from '../../modules/DifficultySelector';
 import { useAppStore } from '../../store/appStore';
-import { getPlayableNotes } from '../../domain/Song';
+import { getPlayableNotes, type Song } from '../../domain/Song';
 import { chooseBestPosition, getGuitarPositions, internalStringIndexToGuitarStringNumber, type GuitarPosition } from '../../guitar/fretboard';
 import { usePitchDetector } from '../../audio/usePitchDetector';
 import {
@@ -48,11 +48,19 @@ const LessonPage: React.FC = () => {
 
   const [progress, setProgress] = useState<LessonProgress | null>(null);
   const [lessonError, setLessonError] = useState<string | null>(null);
+  const [playRequest, setPlayRequest] = useState<Song | null>(null);
+  const pendingPlay = currentSong !== null && playRequest === currentSong;
   const previousPositionRef = useRef<GuitarPosition | undefined>(undefined);
   const lastFrameRef = useRef<number | null>(null);
   const lastHandledDetectionRef = useRef<number | null>(null);
+  const detectionAfterRef = useRef(0);
   const currentTimeRef = useRef(0);
   const rafIdRef = useRef<number | null>(null);
+
+  const invalidateDetections = useCallback(() => {
+    detectionAfterRef.current = performance.now();
+    lastHandledDetectionRef.current = null;
+  }, []);
 
   const notes = useMemo(() => (currentSong ? getPlayableNotes(currentSong) : []), [currentSong]);
   const playableNoteIndexById = useMemo(
@@ -73,6 +81,9 @@ const LessonPage: React.FC = () => {
 
   useEffect(() => {
     if (!currentSong) {
+      setPlayRequest(null);
+      setIsPlaying(false);
+      invalidateDetections();
       setProgress(null);
       setLessonError(null);
       setMicrophoneEnabled(false);
@@ -80,6 +91,8 @@ const LessonPage: React.FC = () => {
     }
 
     const fresh = createLessonProgress(currentSong);
+    setPlayRequest(null);
+    invalidateDetections();
     setProgress(fresh);
     resetScore(getPlayableNotes(currentSong).length);
     updateScore(calculateScore(currentSong, fresh));
@@ -90,8 +103,13 @@ const LessonPage: React.FC = () => {
     setMicrophoneEnabled(false);
     setLessonError(null);
     previousPositionRef.current = undefined;
-    lastHandledDetectionRef.current = null;
-  }, [currentSong, resetScore, setCurrentTime, setIsPlaying, setLoopRange, setMicrophoneEnabled, updateScore]);
+  }, [currentSong, invalidateDetections, resetScore, setCurrentTime, setIsPlaying, setLoopRange, setMicrophoneEnabled, updateScore]);
+
+  useEffect(() => {
+    if (currentSong && progress) {
+      updateScore(calculateScore(currentSong, progress));
+    }
+  }, [currentSong, progress, updateScore]);
 
   useEffect(() => {
     currentTimeRef.current = currentTime;
@@ -114,7 +132,15 @@ const LessonPage: React.FC = () => {
   }, [expectedNote]);
 
   const targetNoteIndex = expectedNote ? playableNoteIndexById[expectedNote.id] ?? null : null;
-  const { snapshot, error: pitchError } = usePitchDetector(microphoneEnabled, expectedNote?.midi);
+  const { snapshot, error: pitchError, ready: microphoneReady } = usePitchDetector(microphoneEnabled, expectedNote?.midi);
+
+  useEffect(() => {
+    if (pendingPlay && microphoneEnabled && microphoneReady && !pitchError) {
+      invalidateDetections();
+      setPlayRequest(null);
+      setIsPlaying(true);
+    }
+  }, [pendingPlay, microphoneEnabled, microphoneReady, pitchError, invalidateDetections, setIsPlaying]);
 
   useEffect(() => {
     setDetectedPitch(snapshot);
@@ -126,6 +152,7 @@ const LessonPage: React.FC = () => {
     }
 
     setLessonError(pitchError);
+    setPlayRequest(null);
     setIsPlaying(false);
     setMicrophoneEnabled(false);
   }, [pitchError, setIsPlaying, setMicrophoneEnabled]);
@@ -142,20 +169,11 @@ const LessonPage: React.FC = () => {
 
       const songDuration = currentSong.duration;
       let nextTime = currentTimeRef.current + delta;
-      let nextProgress: LessonProgress | null = null;
+      const wrapped = loopEnabled && loopEnd > loopStart && nextTime >= loopEnd;
 
-      if (loopEnabled && loopEnd > loopStart && nextTime >= loopEnd) {
+      if (wrapped) {
         nextTime = loopStart;
-        setProgress((prev) => {
-          if (!prev) {
-            return prev;
-          }
-
-          const reset = resetProgressInRange(currentSong, prev, loopStart, loopEnd);
-          nextProgress = reset;
-          updateScore(calculateScore(currentSong, reset));
-          return reset;
-        });
+        invalidateDetections();
         previousPositionRef.current = undefined;
       }
 
@@ -168,14 +186,12 @@ const LessonPage: React.FC = () => {
       setCurrentTime(nextTime);
 
       setProgress((prev) => {
-        const baseProgress = nextProgress ?? prev;
-        if (!baseProgress) {
-          return baseProgress;
+        if (!prev) {
+          return prev;
         }
 
-        const updated = markMissedNotes(currentSong, baseProgress, nextTime, DEFAULT_LESSON_CONFIG);
-        updateScore(calculateScore(currentSong, updated));
-        return updated;
+        const baseProgress = wrapped ? resetProgressInRange(currentSong, prev, loopStart, loopEnd) : prev;
+        return markMissedNotes(currentSong, baseProgress, nextTime, DEFAULT_LESSON_CONFIG);
       });
 
       if (nextTime < songDuration) {
@@ -193,6 +209,7 @@ const LessonPage: React.FC = () => {
     };
   }, [
     currentSong,
+    invalidateDetections,
     isPlaying,
     loopEnabled,
     loopEnd,
@@ -200,15 +217,14 @@ const LessonPage: React.FC = () => {
     setCurrentTime,
     setIsPlaying,
     tempoMultiplier,
-    updateScore,
   ]);
 
   useEffect(() => {
-    if (!currentSong || !progress || !expectedNote || !snapshot.midi || !snapshot.frequency || !snapshot.timestamp) {
+    if (!isPlaying || !microphoneEnabled || !microphoneReady || !currentSong || !progress || !expectedNote || snapshot.midi == null || !snapshot.frequency || snapshot.timestamp == null) {
       return;
     }
 
-    if (lastHandledDetectionRef.current === snapshot.timestamp) {
+    if (snapshot.timestamp <= detectionAfterRef.current || (lastHandledDetectionRef.current !== null && snapshot.timestamp <= lastHandledDetectionRef.current)) {
       return;
     }
 
@@ -218,83 +234,80 @@ const LessonPage: React.FC = () => {
 
     const evaluation = evaluateDetectedNote(expectedNote, snapshot.midi, currentTime, snapshot.frequency, DEFAULT_LESSON_CONFIG);
     lastHandledDetectionRef.current = snapshot.timestamp;
+    if (evaluation.correct && expectedPosition) {
+      previousPositionRef.current = expectedPosition;
+    }
 
     setProgress((prev) => {
       if (!prev) {
         return prev;
       }
 
-      const updated = applyEvaluation(prev, evaluation);
-      if (evaluation.correct && expectedPosition) {
-        previousPositionRef.current = expectedPosition;
-      }
-      updateScore(calculateScore(currentSong, updated));
-      return updated;
+      return applyEvaluation(prev, evaluation);
     });
-  }, [currentSong, currentTime, expectedNote, expectedPosition, progress, snapshot, updateScore]);
+  }, [currentSong, currentTime, expectedNote, expectedPosition, progress, snapshot, isPlaying, microphoneEnabled, microphoneReady]);
 
-  const handleSeek = async (newTime: number) => {
+  const handleSeek = (newTime: number) => {
     if (!currentSong) {
       return;
     }
 
     const clampedTime = Math.min(Math.max(newTime, 0), currentSong.duration);
+    setPlayRequest(null);
     setIsPlaying(false);
+    if (!microphoneReady) {
+      setMicrophoneEnabled(false);
+    }
     setCurrentTime(clampedTime);
     currentTimeRef.current = clampedTime;
     previousPositionRef.current = undefined;
-    lastHandledDetectionRef.current = null;
+    invalidateDetections();
     const rebuilt = rebuildLessonProgress(currentSong, clampedTime);
     setProgress(rebuilt);
     updateScore(calculateScore(currentSong, rebuilt));
   };
 
-  const enableMicrophone = async (): Promise<boolean> => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
-      setMicrophoneEnabled(true);
-      setLessonError(null);
-      return true;
-    } catch {
-      setMicrophoneEnabled(false);
-      setLessonError(t('aiComposer.input.microphoneError'));
-      return false;
-    }
-  };
-
-  const handlePlayPause = async () => {
-    if (isPlaying) {
+  const handlePlayPause = () => {
+    invalidateDetections();
+    if (isPlaying || pendingPlay) {
+      setPlayRequest(null);
       setIsPlaying(false);
+      if (pendingPlay) {
+        setMicrophoneEnabled(false);
+      }
       return;
     }
 
-    if (!microphoneEnabled) {
-      const microphoneReady = await enableMicrophone();
-      if (!microphoneReady) {
-        return;
-      }
+    if (!currentSong) {
+      return;
     }
 
     setLessonError(null);
-    setIsPlaying(true);
+    setPlayRequest(currentSong);
+    setMicrophoneEnabled(true);
   };
 
-  const handleMicrophoneToggle = async () => {
+  const handleMicrophoneToggle = () => {
+    invalidateDetections();
     if (microphoneEnabled) {
+      setPlayRequest(null);
+      setIsPlaying(false);
       setMicrophoneEnabled(false);
       return;
     }
 
-    await enableMicrophone();
+    setLessonError(null);
+    setMicrophoneEnabled(true);
   };
 
   const handleStop = () => {
+    setPlayRequest(null);
     setIsPlaying(false);
+    setMicrophoneEnabled(false);
     setCurrentTime(0);
     currentTimeRef.current = 0;
     previousPositionRef.current = undefined;
-    lastHandledDetectionRef.current = null;
+    invalidateDetections();
     if (currentSong) {
       const fresh = createLessonProgress(currentSong);
       setProgress(fresh);
@@ -332,13 +345,13 @@ const LessonPage: React.FC = () => {
 
             <div className="bg-gray-800 p-6 rounded-xl space-y-4">
               <div className="flex flex-wrap gap-3 items-center">
-                <button className="px-4 py-2 bg-blue-600 rounded" onClick={() => void handlePlayPause()}>
-                  {isPlaying ? t('lesson.pause') : t('lesson.play')}
+                <button className="px-4 py-2 bg-blue-600 rounded" onClick={handlePlayPause}>
+                  {pendingPlay ? t('lesson.cancelStart') : isPlaying ? t('lesson.pause') : t('lesson.play')}
                 </button>
                 <button className="px-4 py-2 bg-red-600 rounded" onClick={handleStop}>
                   {t('lesson.stop')}
                 </button>
-                <button className={`px-4 py-2 rounded ${microphoneEnabled ? 'bg-green-600' : 'bg-gray-600'}`} onClick={() => void handleMicrophoneToggle()}>
+                <button className={`px-4 py-2 rounded ${microphoneEnabled ? 'bg-green-600' : 'bg-gray-600'}`} onClick={handleMicrophoneToggle}>
                   {microphoneEnabled ? t('pitchDetection.detecting') : t('pitchDetection.enableMicrophone')}
                 </button>
               </div>
@@ -350,7 +363,7 @@ const LessonPage: React.FC = () => {
                   max={currentSong.duration}
                   step={0.01}
                   value={currentTime}
-                  onChange={(event) => void handleSeek(Number(event.target.value))}
+                  onChange={(event) => handleSeek(Number(event.target.value))}
                   className="w-full"
                 />
                 <div className="flex justify-between text-sm text-gray-400">
